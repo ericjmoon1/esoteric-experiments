@@ -491,27 +491,45 @@ input:hover, select:hover, textarea:hover { border-color: #7f7f78; }
   .playbox { padding: 14px; }
 }
 
-/* Compact code-only source presentation */
+/* Source panes: readable height, wrapped code, vertical scrolling */
 .code-frame {
-  min-height: 0 !important;
-  max-height: 300px;
-  overflow: auto;
+  min-height: 220px !important;
+  max-height: 380px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 pre.code, pre.revealed-code {
-  min-height: 0;
+  min-height: 220px;
 }
-.dynamic-source {
+.dynamic-source,
+.revealed-code {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* These languages use two-dimensional spacing as part of the program. */
+#hexagony .dynamic-source,
+#befunge .dynamic-source {
   white-space: pre !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
 }
-#whitespace .code-frame {
-  min-height: 150px !important;
-}
+#hexagony .code-frame,
 #befunge .code-frame {
-  max-width: 100%;
+  overflow-x: auto;
 }
-#jsfuck .dynamic-source,
-#chicken .dynamic-source {
-  white-space: pre !important;
+
+#whitespace .code-frame {
+  min-height: 220px !important;
+}
+
+@media (max-width: 720px) {
+  .code-frame {
+    min-height: 190px !important;
+    max-height: 340px;
+  }
+  pre.code, pre.revealed-code {
+    min-height: 190px;
+  }
 }
