@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Interactive experiments in esoteric programming languages, plus MOON, a small celestial emoji esolang.">
   <title>Esoteric Programming Languages — Eric Moon</title>
-  <link rel="stylesheet" href="style.css?v=20260928-2000">
+  <link rel="stylesheet" href="style.css?v=20260928-2030">
 </head>
 <body>
 <div class="site">
@@ -57,7 +57,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/cow/cowculator.cow" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="cow-source-view"></pre></div><span id="cow-fragment" hidden></span></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">arithmetic companion</span></div><div class="playbox"><div class="form-grid three"><label>First number<input id="cow-a" type="number" value="17"></label><label>Operation<select id="cow-op"><option value="+">+</option><option value="-">−</option><option value="*">×</option><option value="/">÷</option></select></label><label>Second number<input id="cow-b" type="number" value="25"></label></div><div class="action-row"><button class="action" id="cow-run">MOO</button></div><div class="result" id="cow-result" aria-live="polite"><div class="answer">42</div><div class="detail">17 + 25</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>A calculator makes the language's tiny vocabulary visible: the same handful of commands must do all of the memory movement and arithmetic. The interactive companion lets you change both numbers and the operation instead of running one frozen example.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>COW is a 2003 Brainfuck variant by Sean Heber. It uses a tape-like memory model and twelve instructions; most commands are capitalization variants of <code>moo</code>, so changing a single letter can change the operation entirely.</p><a class="learn-link" href="https://esolangs.org/wiki/COW" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Cowculator lets you choose two numbers and one of four arithmetic operations. The browser computes the result while the source pane updates to show the current COW program snippet, making the language’s extremely small vocabulary visible.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="whitespace" data-section style="--local-accent:#7c7c7c">
@@ -66,7 +69,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/whitespace/invisible_day_finder.ws" target="_blank">View full source code ↗</a></div><div class="code-frame"><div class="code-empty" id="ws-empty">The generated program is here.<br>It is made entirely of spaces, tabs, and line feeds.</div><pre class="revealed-code" id="ws-visible" hidden></pre></div><div class="source-tools"><button class="text-button" id="ws-reveal">Reveal generated whitespace</button></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">calendar companion</span></div><div class="playbox"><div class="form-grid two"><label>Date<input id="ws-date" inputmode="numeric" maxlength="8" value="09282026" aria-label="Date in MMDDYYYY"></label><label>Find<select id="ws-mode"><option value="weekday">weekday</option><option value="dayofyear">day of year</option><option value="leap">leap-year status</option></select></label></div><div class="action-row"><button class="action" id="ws-run">FIND IT</button></div><div class="result" id="ws-result" aria-live="polite"><div class="answer">MONDAY</div><div class="detail">September 28, 2026</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The source code is the visual gag, but the calculation is real: the original program uses integer arithmetic to determine a weekday. The companion also lets you inspect two related calendar facts from the same date.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Whitespace is a 2003 imperative, stack-based language by Edwin Brady and Chris Morris. Only spaces, tabs, and line feeds are meaningful syntax; ordinary visible characters are ignored, which means a valid program can appear completely blank.</p><a class="learn-link" href="https://esolangs.org/wiki/Whitespace" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Invisible Day Finder accepts a date and can return its weekday, day of year, or leap-year status. The source pane is intentionally blank until you reveal the same program using visible markers for spaces, tabs, and line feeds.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="piet" data-section style="--local-accent:#9a466d">
@@ -75,7 +81,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source image</span><a href="programs/piet/color_mixer_default.png" target="_blank">View source image ↗</a></div><div class="piet-frame"><img id="piet-image" src="programs/piet/color_mixer_default.png" alt="Square Piet codel image for the default red and blue color mix"></div><div class="source-tools"><button class="text-button" id="piet-download" type="button">Download current PNG</button></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">RYB color mixing</span></div><div class="playbox"><div class="form-grid two"><label>First color<select id="piet-a"><option>red</option><option>yellow</option><option>blue</option></select></label><label>Second color<select id="piet-b"><option>blue</option><option>red</option><option>yellow</option></select></label></div><div class="action-row"><button class="action" id="piet-run">MIX</button></div><div class="result"><div class="color-result"><div class="color-swatch" id="piet-swatch"></div><div><div class="answer" id="piet-answer">PURPLE</div><div class="detail" id="piet-detail">red + blue</div></div></div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>For a language where color changes are instructions, a color-mixing project is deliberately self-referential. The source stays visual, while the controls let you try all pairs of the traditional red-yellow-blue primaries.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Piet, created by David Morgan-Mar, is a stack-based visual language whose programs resemble abstract paintings. Operations are encoded by transitions between colored codels using cyclic hue and lightness changes rather than textual keywords.</p><a class="learn-link" href="https://esolangs.org/wiki/Piet" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Primary Color Mixer lets you combine two traditional RYB primary colors. The result and square codel image both change with the selections, so the project uses color as both the subject of the experiment and the visual form of the language.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="hexagony" data-section style="--local-accent:#52729a">
@@ -84,7 +93,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/hexagony/hexagonal_echo.hxg" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="hexagony-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">figurative numbers</span></div><div class="playbox"><div class="form-grid two"><label>n<input id="hex-n" type="number" min="1" step="1" value="5"></label><label>Sequence<select id="hex-mode"><option value="centered">centered hexagonal</option><option value="ordinary">hexagonal</option></select></label></div><div class="action-row"><button class="action" id="hex-run">CALCULATE</button></div><div class="result" id="hex-result"><div class="answer">61</div><div class="detail">H₅ = 3(5)(4) + 1</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>Hexagonal code calculating hexagonal numbers is exactly the kind of unnecessary thematic match that makes esolangs fun. Switch between ordinary and centered hexagonal sequences to see both formulas.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Hexagony is a two-dimensional language by Martin Ender in which source is arranged as a regular hexagon rather than a line or rectangle. Its execution and memory models both use hexagonal geometry, making spatial layout part of the computation.</p><a class="learn-link" href="https://esolangs.org/wiki/Hexagony" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Hexagonal Number Machine calculates ordinary or centered hexagonal numbers for a chosen <em>n</em>. The source view updates with the selected sequence and value, pairing a hexagonal program layout with a genuinely hexagonal mathematical sequence.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="arnoldc" data-section style="--local-accent:#78433f">
@@ -93,7 +105,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/arnoldc/terminator_countdown.arnoldc" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="arnoldc-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">countdown</span></div><div class="playbox"><div class="form-grid two"><label>Start at<input id="arnold-start" type="number" min="1" max="20" value="5"></label><label>Final line<select id="arnold-line"><option>HASTA LA VISTA, BABY.</option><option>I'LL BE BACK.</option><option>GET TO THE CHOPPER!</option></select></label></div><div class="action-row"><button class="action" id="arnold-run">GET TO THE CHOPPER</button></div><div class="result" id="arnold-result"><div class="answer">5 · 4 · 3 · 2 · 1</div><div class="detail">HASTA LA VISTA, BABY.</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>A countdown gives the quote-based syntax something appropriately cinematic to do. Change both the launch number and the final Arnold line.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>ArnoldC, created by Lauri Hartikka in 2013, replaces conventional programming keywords with Arnold Schwarzenegger quotations. Keywords are written in uppercase while variable names are lowercase, so the source reads like a movie-script parody with real control flow and arithmetic.</p><a class="learn-link" href="https://esolangs.org/wiki/ArnoldC" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Terminator Countdown lets you choose the starting number and the final Arnold quotation. The generated source updates those values while the companion displays the resulting countdown.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="beatnik" data-section style="--local-accent:#704c72">
@@ -102,7 +117,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/beatnik/jazz_score.btk" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="beatnik-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">Scrabble scoring</span></div><div class="playbox"><label>Word or phrase<input id="beatnik-word" value="JAZZ"></label><div class="action-row"><button class="action" id="beatnik-run">SCORE WORD</button></div><div class="result"><div class="answer" id="beatnik-answer">29 points</div><div class="score-breakdown" id="beatnik-breakdown">J=8 · A=1 · Z=10 · Z=10</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>This one turns Beatnik back on itself: if Scrabble values control the language, the project should calculate Scrabble values. Enter any word or phrase and see exactly where the score comes from.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Beatnik is a stack-based language by Cliff L. Biffle in which ordinary-looking English words become instructions according to their Scrabble scores. The numerical score of each word determines which stack, I/O, arithmetic, or control operation is executed.</p><a class="learn-link" href="https://esolangs.org/wiki/Beatnik" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Scrabble Score Calculator turns Beatnik’s own encoding rule into the subject of the experiment. Enter any word or phrase to calculate its Scrabble value while the source pane regenerates a Beatnik snippet for the current score.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="chef" data-section style="--local-accent:#8b633d">
@@ -111,7 +129,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/chef/cookie_batch_calculator.chef" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="chef-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">batch math</span></div><div class="playbox"><div class="form-grid three"><label>Batches<input id="chef-batches" type="number" min="0" step="1" value="4"></label><label>Cookies / batch<input id="chef-per" type="number" min="0" step="1" value="12"></label><label>Taste-tested<input id="chef-eaten" type="number" min="0" step="1" value="2"></label></div><div class="action-row"><button class="action" id="chef-run">BAKE</button></div><div class="result"><div class="answer" id="chef-answer">46 cookies left</div><div class="detail" id="chef-detail">48 baked − 2 taste-tested</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>A recipe language deserves a recipe calculation. Unlike the first prototype, both the number of batches and the recipe size can change—and so can the number lost to “quality control.”</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Chef is a 2002 stack-based language by David Morgan-Mar whose programs are written as cooking recipes. Ingredients hold values, mixing bowls act as stacks, and recipe methods perform the program’s operations.</p><a class="learn-link" href="https://esolangs.org/wiki/Chef" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Cookie Batch Calculator lets you change the number of batches, cookies per batch, and cookies taste-tested. The recipe-like source updates those quantities while the companion computes how many cookies remain.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="shakespeare" data-section style="--local-accent:#785149">
@@ -120,7 +141,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/shakespeare/to_be_or_not_to_be.spl" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="shakespeare-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">dramatic comparison</span></div><div class="playbox"><div class="form-grid three"><label>Romeo<input id="spl-a" type="number" value="12"></label><label>Question<select id="spl-op"><option value=">">is greater than</option><option value="<">is less than</option><option value="=">is equal to</option></select></label><label>Juliet<input id="spl-b" type="number" value="7"></label></div><div class="action-row"><button class="action" id="spl-run">BEGIN ACT</button></div><div class="result"><div class="answer" id="spl-answer">TO BE.</div><div class="detail" id="spl-detail">Romeo (12) is greater than Juliet (7).</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The original “truth machine” idea becomes more interactive as a dramatic comparison: choose the two characters' values and the question they are asking, then let the play decide whether the proposition is “to be” or “not to be.”</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>The Shakespeare Programming Language, created by Karl Hasselström and Jon Åslund in 2001, is structured like a play. Characters act as variables, acts and scenes provide program structure and jump targets, and dialogue performs most operations.</p><a class="learn-link" href="https://esolangs.org/wiki/Shakespeare_Programming_Language" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>To Be or Not To Be? lets you assign values to Romeo and Juliet and choose a comparison. The play-like source changes with those values, and the result reports whether the selected proposition is true.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="lolcode" data-section style="--local-accent:#5a7556">
@@ -129,16 +153,22 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/lolcode/cat_age_calculator.lol" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="lolcode-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">cat age</span></div><div class="playbox"><div class="form-grid two"><label>Cat age<input id="lol-age" type="number" min="0" step="0.5" value="3"></label><label>Method<select id="lol-method"><option value="simple">simple ×7</option><option value="staged">life-stage estimate</option></select></label></div><div class="action-row"><button class="action" id="lol-run">VISIBLE AGE</button></div><div class="result"><div class="answer" id="lol-answer">21 human years</div><div class="detail" id="lol-detail">simple ×7 approximation</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The language already sounds like a cat meme, so a cat-age calculator is almost obligatory. The staged option uses a more nuanced age curve than the deliberately silly ×7 mode.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>LOLCODE was created in 2007 to resemble the pidgin-style language of LOLcat memes. Its uppercase keywords include forms such as <code>HAI</code>, <code>I HAS A</code>, <code>O RLY?</code>, and <code>VISIBLE</code>, giving otherwise familiar variables, conditionals, and arithmetic a deliberately unusual surface syntax.</p><a class="learn-link" href="https://esolangs.org/wiki/LOLCODE" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>I CAN HAZ HUMAN YEARS? converts a cat’s age using either a simple ×7 rule or a staged estimate. The source pane shows the actual arithmetic and conditional branches being used rather than merely inserting the final answer.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="rockstar" data-section style="--local-accent:#6f3e4e">
       <div class="experiment-header"><div class="section-number">10 / Rockstar</div><div><h2>Rockstar</h2><div class="project-title">Rock–Paper–Scissors</div><p class="language-note">Rockstar is designed so programs can read like overwrought rock lyrics. Variables and operations are phrased to look more like a song than source code.</p></div></div>
       <div class="workbench">
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/rockstar/rock_paper_scissors.rock" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="rockstar-source-view"></pre></div></div>
-        <div class="play-column"><div class="column-head"><span class="micro-label">Play</span><span class="micro-label">best of one</span></div><div class="playbox"><div class="rps-buttons" id="rps-buttons"><button data-move="rock">ROCK</button><button data-move="paper">PAPER</button><button data-move="scissors">SCISSORS</button></div><div class="action-row"><button class="action" id="rps-run">ROCK ON</button></div><div class="result"><div class="answer" id="rps-answer">Choose a move.</div><div class="detail" id="rps-detail"></div></div></div></div>
+        <div class="play-column"><div class="column-head"><span class="micro-label">Play</span><span class="micro-label">best of one</span></div><div class="playbox"><div class="form-grid two"><label>Game<select id="rps-variant"><option value="classic">Rock · Paper · Scissors</option><option value="rpsls">Rock · Paper · Scissors · Lizard · Spock</option></select></label><label>Match<select id="rps-match"><option value="1">single round</option><option value="2">best of 3</option><option value="3">best of 5</option></select></label></div><div class="rps-buttons" id="rps-buttons" style="margin-top:14px"><button data-move="rock">ROCK</button><button data-move="paper">PAPER</button><button data-move="scissors">SCISSORS</button></div><div class="rps-scoreline"><span id="rps-you-score">You 0</span><span id="rps-ties">Ties 0</span><span id="rps-cpu-score">Rockstar 0</span></div><div class="action-row"><button class="action" id="rps-run">ROCK ON</button><button class="action secondary" id="rps-reset">RESET MATCH</button></div><div class="result"><div class="answer" id="rps-answer">Choose a move.</div><div class="detail" id="rps-detail"></div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>This is intentionally literal: Rockstar gets Rock–Paper–Scissors. Pick your move first; the browser companion chooses its move only when the round starts.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Rockstar is a dynamically typed language created by Dylan Beattie in 2018 so that programs can read like hard-rock and power-ballad lyrics. It is a fully specified language whose poetic syntax also satirizes the phrase “rockstar developer.”</p><a class="learn-link" href="https://esolangs.org/wiki/Rockstar" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Rock–Paper–Scissors is now a small game engine rather than a single button: choose the classic three-move game or Rock–Paper–Scissors–Lizard–Spock, choose a match length, and play multiple rounds while the lyric-like source reflects the current moves and decision logic.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="intercal" data-section style="--local-accent:#666063">
@@ -147,7 +177,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/intercal/overly_polite_roman_numeral.i" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="intercal-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">PLEASE try it</span><span class="micro-label">calculator</span></div><div class="playbox"><div class="form-grid three"><label>First<input id="inter-a" type="number" value="40"></label><label>Operation<select id="inter-op"><option value="+">+</option><option value="-">−</option><option value="*">×</option><option value="/">÷</option></select></label><label>Second<input id="inter-b" type="number" value="2"></label></div><label style="margin-top:12px">Output<select id="inter-format"><option value="both">decimal + Roman</option><option value="decimal">decimal</option><option value="roman">Roman numeral</option></select></label><div class="action-row"><button class="action" id="inter-run">PLEASE CALCULATE</button></div><div class="result"><div class="answer" id="inter-answer">42 / XLII</div><div class="detail" id="inter-detail">THANK YOU.</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The first source experiment reads and writes an integer in INTERCAL's famously odd style. The companion expands that into the calculator the name suggests, while keeping the needless politeness.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>INTERCAL was created by Donald R. Woods and James M. Lyon in 1972 with the explicit goal of resembling no existing programming language. It is famous for deliberately strange syntax, unusual operators such as Mingle and Select, and its famously unnecessary use of <code>PLEASE</code>.</p><a class="learn-link" href="https://esolangs.org/wiki/Intercal" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Overly Polite Calculator accepts two numbers, an arithmetic operation, and an output format. The companion computes the result while the source pane updates the values and selected operation in an INTERCAL-style program.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="ook" data-section style="--local-accent:#8a6842">
@@ -156,7 +189,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/ook/banana.ook" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="ook-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">banana logistics</span></div><div class="playbox"><div class="form-grid three"><label>Apes<input id="ook-apes" type="number" min="0" step="1" value="3"></label><label>Bananas / ape / day<input id="ook-rate" type="number" min="0" step="1" value="4"></label><label>Days<input id="ook-days" type="number" min="0" step="1" value="7"></label></div><div class="action-row"><button class="action" id="ook-run">OOK!</button></div><div class="result"><div class="answer" id="ook-answer">84 bananas</div><div class="detail" id="ook-detail">3 × 4 × 7</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>If the entire syntax sounds like an orangutan, the program should at least be responsible for the banana budget. All three quantities are adjustable.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Ook!, created by David Morgan-Mar, is a joke language that maps Brainfuck’s eight commands onto pairs made from <code>Ook.</code>, <code>Ook?</code>, and <code>Ook!</code>. The underlying tape-machine behavior is unchanged; only the vocabulary is transformed.</p><a class="learn-link" href="https://esolangs.org/wiki/Ook%21" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Banana Calculator multiplies apes, bananas per ape per day, and days. The current total is converted into an Ook! program so the left pane remains pure Ook! syntax while the right side keeps the themed calculation understandable.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="chicken" data-section style="--local-accent:#8d7048">
@@ -165,7 +201,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/chicken/egg_adder.chicken" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="chicken-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">egg production</span></div><div class="playbox"><div class="form-grid three"><label>Chickens<input id="chick-count" type="number" min="0" step="1" value="6"></label><label>Eggs / chicken / day<input id="chick-rate" type="number" min="0" step="0.1" value="0.8"></label><label>Days<input id="chick-days" type="number" min="0" step="1" value="7"></label></div><div class="action-row"><button class="action" id="chick-run">COUNT EGGS</button></div><div class="result"><div class="answer" id="chick-answer">≈ 34 eggs</div><div class="detail" id="chick-detail">6 × 0.8 × 7 = 33.6</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The original source adds two one-digit inputs; the companion pushes the same arithmetic joke into a more useful chicken-themed question.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Chicken is a stack-based language by Torbjörn Söderstedt in which <code>chicken</code> is the only valid word. Each line contains a number of chickens, and that count selects an opcode, making line length itself part of the program.</p><a class="learn-link" href="https://esolangs.org/wiki/Chicken" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Egg Counter estimates egg production from flock size, laying rate, and number of days. Its source pane regenerates lines made only from <code>chicken</code>, preserving the language’s defining restriction.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="malbolge" data-section style="--local-accent:#7e3d3d">
@@ -174,7 +213,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/malbolge/echo_from_hell.mal" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="malbolge-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Descend</span><span class="micro-label">countdown companion</span></div><div class="playbox"><div class="form-grid two"><label>Start at<input id="mal-start" type="number" min="1" max="25" value="9"></label><label>Display<select id="mal-base"><option value="10">decimal</option><option value="16">hexadecimal</option><option value="2">binary</option></select></label></div><div class="action-row"><button class="action" id="mal-run">DESCEND</button></div><div class="result"><div class="answer" id="mal-answer">9 · 8 · 7 · … · 1</div><div class="detail" id="mal-detail">then: 0</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>There is no pretending that Malbolge is pleasant. The browser companion leans into the name with a configurable descent, while the source panel preserves the genuinely cursed-looking program.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Malbolge was created by Ben Olmstead in 1998 to be exceptionally difficult to program. It runs on a ternary virtual machine and combines unusual memory initialization, a ternary “crazy” operation, and self-altering execution behavior.</p><a class="learn-link" href="https://esolangs.org/wiki/Malbolge" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Infernal Countdown gives the language a themed companion: choose a starting value and display base to descend toward zero. The source pane preserves the compact Malbolge program itself rather than trying to disguise its intentionally hostile syntax.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="jsfuck" data-section style="--local-accent:#5d5d7f">
@@ -183,16 +225,22 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/jsfuck/forty_two.js" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="jsfuck-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">safe arithmetic</span></div><div class="playbox"><label>Expression<input id="jsf-expr" value="6*7" aria-label="Simple arithmetic expression"></label><div class="action-row"><button class="action" id="jsf-run">MAKE IT AWFUL</button></div><div class="result"><div class="answer" id="jsf-answer">42</div><div class="detail">Generated using only [ ] ( ) ! +</div><div class="generated-code" id="jsf-code"></div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>Enter a simple arithmetic expression. The browser safely evaluates it, then generates a deliberately inefficient JSFuck-style representation for a small nonnegative integer result.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>JSFuck is a subset of JavaScript that restricts source code to only six characters: <code>+</code>, <code>!</code>, <code>(</code>, <code>)</code>, <code>[</code>, and <code>]</code>. It relies on JavaScript’s coercion rules to construct values and, in principle, arbitrary JavaScript programs.</p><a class="learn-link" href="https://esolangs.org/wiki/JSFuck" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Six-Character Calculator accepts a small arithmetic expression and produces the numerical result together with a deliberately inefficient JSFuck representation using only the language’s six allowed characters.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="befunge" data-section style="--local-accent:#366c65">
       <div class="experiment-header"><div class="section-number">16 / Befunge-93</div><div><h2>Befunge-93</h2><div class="project-title">The Program Is the Maze</div><p class="language-note">Befunge source is a two-dimensional grid. The instruction pointer can travel right, left, up, or down, so layout becomes part of control flow.</p></div></div>
       <div class="workbench">
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/befunge/maze.bf93" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="befunge-source-view"></pre></div></div>
-        <div class="play-column"><div class="column-head"><span class="micro-label">Play</span><span class="micro-label">2-D maze companion</span></div><div class="playbox"><div class="maze-wrap"><div class="maze" id="maze" aria-label="Befunge-inspired maze"></div></div><div class="maze-controls" aria-label="Maze controls"><button class="up" data-dir="up">↑</button><button class="left" data-dir="left">←</button><button class="down" data-dir="down">↓</button><button class="right" data-dir="right">→</button></div><div class="action-row"><button class="action secondary" id="maze-reset">RESET MAZE</button></div><div class="result"><div class="answer" id="maze-answer">Find the exit.</div><div class="detail" id="maze-detail">The source language itself is spatial, so this companion is too.</div></div></div></div>
+        <div class="play-column"><div class="column-head"><span class="micro-label">Play</span><span class="micro-label">2-D maze companion</span></div><div class="playbox"><label>Maze<select id="maze-select"><option value="switchback">Switchback</option><option value="spiral">Spiral</option><option value="crossroads">Crossroads</option></select></label><div class="maze-wrap"><div class="maze" id="maze" aria-label="Befunge-inspired maze"></div></div><div class="maze-controls" aria-label="Maze controls"><button class="up" data-dir="up">↑</button><button class="left" data-dir="left">←</button><button class="down" data-dir="down">↓</button><button class="right" data-dir="right">→</button></div><div class="action-row"><button class="action secondary" id="maze-reset">RESET MAZE</button></div><div class="result"><div class="answer" id="maze-answer">Find the exit.</div><div class="detail" id="maze-detail">The source language itself is spatial, so this companion is too.</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The first version merely printed the word “MAZE,” which missed the point. Here you actually navigate one. The visual source next to it shows why Befunge is fundamentally different from a normal one-dimensional language.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Befunge was created by Chris Pressey in 1993 as a two-dimensional, stack-based language. Source occupies a rectangular playfield and the instruction pointer can travel in any cardinal direction, so control flow is literally encoded by spatial paths through the grid.</p><a class="learn-link" href="https://esolangs.org/wiki/Befunge" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>The Program Is the Maze turns that spatial idea into a playable exhibit. Choose among several mazes, navigate from <code>S</code> to <code>G</code>, and watch the source view track your current position in the two-dimensional grid.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="brainfuck" data-section style="--local-accent:#4d617e">
@@ -201,7 +249,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/brainfuck/caesar_plus_three.bf" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="brainfuck-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">Caesar cipher</span></div><div class="playbox"><label>Message<input id="bf-message" value="MEET ME AT NOON"></label><div class="form-grid two" style="margin-top:12px"><label>Shift<input id="bf-shift" type="number" min="0" max="25" value="3"></label><label>Mode<select id="bf-mode"><option value="encode">encode</option><option value="decode">decode</option></select></label></div><div class="action-row"><button class="action" id="bf-run">ENCODE</button></div><div class="result"><div class="answer" id="bf-answer">PHHW PH DW QRRQ</div><div class="detail" id="bf-detail">A +3 character experiment begins as ,+++.</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The original five-character program reads one character, adds three, and outputs it. The companion extends that idea to an entire message while letting you choose the shift and direction.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>Brainfuck, created by Urban Müller in 1993, is a minimal cell-based language with eight commands. A pointer moves along a tape of memory cells; the commands move the pointer, change cell values, perform I/O, and form loops.</p><a class="learn-link" href="https://esolangs.org/wiki/Brainfuck" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Secret Message Machine applies a selectable Caesar shift to an entire message. Changing the message, direction, or shift updates the result and the compact Brainfuck program shown beside it.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="ahhh" data-section style="--local-accent:#875349">
@@ -210,7 +261,10 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/ahhh/scream_squarer.ahhh" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="ahhh-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">loud arithmetic</span></div><div class="playbox"><div class="form-grid two"><label>Number<input id="ahhh-n" type="number" value="12"></label><label>Operation<select id="ahhh-op"><option value="square">square</option><option value="cube">cube</option></select></label></div><div class="action-row"><button class="action" id="ahhh-run">AHHH!</button></div><div class="result"><div class="answer" id="ahhh-answer">144</div><div class="detail" id="ahhh-detail">12²</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>The name does most of the comedic work. The companion adds a second operation so it is more than a fixed “enter one number, get one answer” demo.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>AHHH, created by Kyle Morgenstein in 2021, is a cell-based language inspired by COW and Brainfuck. Its commands are capitalization patterns of four Hs, with <code>AHHH</code> serving as the program start marker; the result looks like one long programmable scream.</p><a class="learn-link" href="https://esolangs.org/wiki/AHHH" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>Scream Squarer lets you choose a number and square or cube it. The output is ordinary arithmetic, while the source pane translates the current choice into the language’s intentionally scream-like command patterns.</p></div>
+      </div>
     </section>
 
     <section class="experiment" id="hq9plus" data-section style="--local-accent:#5a6d56">
@@ -219,12 +273,19 @@
         <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/hq9plus/ninety_nine_bottles.hq9" target="_blank">View full source code ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="hq9plus-source-view"></pre></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Choose a command</span><span class="micro-label">actual HQ9+ semantics</span></div><div class="playbox"><label>Instruction<select id="hq-command"><option value="H">H — Hello, world!</option><option value="Q">Q — print the source</option><option value="9" selected>9 — 99 Bottles</option><option value="+">+ — increment accumulator</option></select></label><div class="action-row"><button class="action" id="hq-run">PLAY</button></div><div class="result"><div class="answer" id="hq-answer">99 Bottles</div><div class="detail hq-output" id="hq-detail">Choose 9 to start the built-in song.</div></div></div></div>
       </div>
-      <div class="explanation"><div class="micro-label">Why this one</div><p>This is one of the rare cases where a one-character program really is the whole joke. The control lets you compare all four instructions rather than showing only the song.</p></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="micro-label">About the language</div><p>HQ9+ is a 2001 joke language by Cliff L. Biffle with only four instructions: <code>H</code> prints “Hello, world!”, <code>Q</code> prints the program’s own source, <code>9</code> prints “99 Bottles of Beer,” and <code>+</code> increments an accumulator.</p><a class="learn-link" href="https://esolangs.org/wiki/HQ9%2B" target="_blank" rel="noopener">Esolang Wiki ↗</a></div>
+        <div class="info-block"><div class="micro-label">What this project does</div><p>One-Character Jukebox lets you switch among all four HQ9+ instructions instead of demonstrating only one. The source pane is intentionally tiny because, in this language, a one-character program can genuinely do the entire job.</p></div>
+      </div>
     </section>
 
     <section class="experiment moon-section" id="moon" data-section>
       <div class="experiment-header"><div class="section-number">My own</div><div><h2>MOON</h2><div class="project-title">Machine-Oriented Orbital Notation</div><p class="language-note">After playing with all of these languages, I made a tiny one of my own. MOON is a Brainfuck-inspired tape language whose source may contain only celestial emoji and whitespace.</p></div></div>
-      <p class="moon-lead">Memory cells are “planets,” the pointer is the “astronaut,” and loops are “orbits.” Unlike the browser companions above, the editor here executes MOON source directly.</p>
+      <p class="moon-lead">MOON is a small tape-based esoteric programming language I designed in 2026 around a celestial instruction alphabet. A program may contain only ten moon/space emoji commands and whitespace; memory cells are “planets,” the active pointer is the “astronaut,” and loops are “orbits.” The browser playground below interprets MOON source directly.</p>
+      <div class="moon-about-grid">
+        <div class="moon-about-card"><div class="micro-label">Language design</div><p>Execution starts on planet 0 with 8-bit cells initialized to zero. <code>🌒</code>/<code>🌘</code> change the current planet, <code>🚀</code>/<code>🛸</code> move the astronaut, <code>🌑</code> clears a planet, <code>🌕</code> outputs a character, <code>⭐</code> outputs a number, <code>📡</code> reads numeric input, and <code>🪐</code>/<code>☄️</code> form loops.</p></div>
+        <div class="moon-about-card"><div class="micro-label">Related ideas</div><p>MOON belongs to the same broad tradition as tiny tape/cell languages such as <a href="https://esolangs.org/wiki/Brainfuck" target="_blank" rel="noopener">Brainfuck</a>, <a href="https://esolangs.org/wiki/COW" target="_blank" rel="noopener">COW</a>, and <a href="https://esolangs.org/wiki/Ook%21" target="_blank" rel="noopener">Ook!</a>. Like <a href="https://esolangs.org/wiki/Piet" target="_blank" rel="noopener">Piet</a> and <a href="https://esolangs.org/wiki/Whitespace" target="_blank" rel="noopener">Whitespace</a>, its restricted visual alphabet is part of the language’s identity. MOON is not a one-for-one command substitution: it adds explicit zeroing, numeric I/O, and its own themed execution model.</p></div>
+      </div>
       <div class="moon-layout">
         <div>
           <div class="column-head"><span class="micro-label">MOON 1.0</span><a href="moon/SPECIFICATION.md" target="_blank">specification ↗</a></div>
@@ -246,7 +307,8 @@
     <footer class="footer">The controls update both the browser result and the source view beside it. Some source views are compact generated sketches for the current choices rather than full external interpreters; MOON is executed directly in the browser. Reference files are included in the repository.</footer>
   </main>
 </div>
-<script src="app.js?v=20260928-2000"></script>
-<script src="source-clean.js?v=20260928-2000"></script>
+<script src="app.js?v=20260928-2030"></script>
+<script src="source-clean.js?v=20260928-2030"></script>
+<script src="enhancements.js?v=20260928-2030"></script>
 </body>
 </html>
