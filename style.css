@@ -374,36 +374,119 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   .rps-buttons { grid-template-columns: 1fr; }
 }
 
-/* Live source views */
+/* Live source views + final polish */
 .dynamic-source {
   white-space: pre-wrap !important;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
-.piet-frame {
-  min-height: 0;
-  aspect-ratio: 1 / 1;
-  width: min(100%, 390px);
+
+/* Make the source/interaction pair feel like one deliberate workbench. */
+.workbench { gap: 24px; }
+.source-column, .play-column { min-width: 0; }
+.code-frame {
+  min-height: 264px;
+  max-height: 360px;
+  border: 1px solid #292a27;
+  border-left: 3px solid var(--local-accent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.playbox {
   margin-top: 12px;
   padding: 16px;
-  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.78);
 }
-.piet-grid {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
-  gap: 2px;
-  background: #d9d9d2;
-  border: 1px solid #aaa99f;
+.column-head { min-height: 30px; }
+input, select, textarea {
+  min-height: 42px;
+  border-color: #aaa99f;
+  background: #fff;
+  transition: border-color .12s ease, box-shadow .12s ease;
 }
-.piet-codel {
-  display: block;
-  min-width: 0;
+input:hover, select:hover, textarea:hover { border-color: #7f7f78; }
+.action {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-color: var(--local-accent);
+  background: var(--local-accent);
+  color: white;
+  letter-spacing: .01em;
+}
+.action:hover { filter: brightness(.92); }
+.action.secondary {
+  border-color: #8d8d86;
+  background: transparent;
+  color: var(--ink);
+}
+.result { min-height: 82px; }
+.result .answer { color: var(--ink); font-size: clamp(25px, 3vw, 31px); }
+.experiment-header { margin-bottom: 22px; }
+.language-note { line-height: 1.58; }
+.explanation { margin-top: 21px; }
+
+/* Give the text-like languages slightly different paper treatments without turning them into cards. */
+#whitespace .code-frame {
+  background: #f4f4ee;
+  color: #30302d;
+  border-color: #c9c9c1;
+  border-left-color: var(--local-accent);
+}
+#whitespace .revealed-code { color: #30302d; }
+#chef .code-frame {
+  background: #fffaf0;
+  color: #352f26;
+  border-color: #d9ccb4;
+  border-left-color: var(--local-accent);
+}
+#shakespeare .code-frame {
+  background: #fbf6eb;
+  color: #332e28;
+  border-color: #d7c8b6;
+  border-left-color: var(--local-accent);
+}
+#rockstar .code-frame { background: #141414; }
+#befunge .code-frame { background: #0f1511; }
+#moon textarea {
+  background: #111722;
+  color: #f2f4f8;
+  border-color: #35435c;
+}
+
+/* Piet: the source itself is a square two-dimensional codel image. */
+.piet-frame {
   min-height: 0;
+  width: min(100%, 390px);
   aspect-ratio: 1 / 1;
+  margin-top: 12px;
+  padding: 12px;
+  overflow: hidden;
+  background: #e9e9e2;
+  border: 1px solid #b6b6ae;
+  border-left: 3px solid var(--local-accent);
 }
+#piet-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  background: white;
+  border: 1px solid #8f8f88;
+  image-rendering: pixelated;
+}
+#piet .mini-source { max-width: 390px; }
+#piet .source-tools { max-width: 390px; }
+
+/* Small language-specific output refinements. */
+#piet .color-swatch { width: 72px; height: 52px; }
+#beatnik .score-breakdown { max-height: 95px; overflow: auto; }
+#jsfuck .generated-code { border-left: 3px solid var(--local-accent); }
+#hq9plus .hq-output { border-top: 1px solid var(--line); padding-top: 10px; }
+#befunge .maze { margin-top: 8px; }
+#befunge .maze-cell { border-color: #cecec7; }
+#befunge .maze-cell.wall { background: #1d211e; border-color: #1d211e; }
+
 @media (max-width: 760px) {
   .piet-frame { width: min(100%, 340px); }
+  .playbox { padding: 14px; }
 }

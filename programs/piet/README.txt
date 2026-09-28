@@ -1,10 +1,15 @@
-PIET COLOR EQUATION
+PIET — PRIMARY COLOR MIXER
 
-Expected output:
-RED + BLUE = PURPLE
+Piet programs are images made from colored codels (square cells). The webpage
+builds a compact two-dimensional codel image from the two selected primary
+colors and the resulting mixed color.
 
-This is a genuine Piet image program. It is intentionally one codel tall.
-On the website, enlarge it with CSS using image-rendering: pixelated.
+Files:
+- color_mixer_default.png — the default red + blue codel image shown by the site.
 
-The colored block sizes encode character values; color transitions perform
-Piet push and out(char) instructions.
+On the webpage, changing the two color controls immediately rebuilds the codel
+image. The “Download current PNG” control saves that current image.
+
+The browser interaction is a visual companion for exploring Piet's image-based
+programming model; the color-mixing result is handled by the webpage rather
+than by an embedded full Piet interpreter.

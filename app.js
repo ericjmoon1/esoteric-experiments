@@ -442,26 +442,66 @@ function sourceWhitespace(){
   $('#ws-visible').textContent=raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵\n');
 }
 
-const pietBase={red:'#ff0000',yellow:'#ffff00',blue:'#0000ff',orange:'#ff8a00',purple:'#800080',green:'#00a050'};
-const pietLight={red:'#ffc0c0',yellow:'#ffffc0',blue:'#c0c0ff',orange:'#ffd5a0',purple:'#d7b7e8',green:'#bce6c6'};
-const pietDark={red:'#c00000',yellow:'#c0c000',blue:'#0000c0',orange:'#bd5d00',purple:'#5b1b68',green:'#006f38'};
-function sourcePiet(){
-  const a=$('#piet-a').value,b=$('#piet-b').value,[name]=mixMap[`${a}|${b}`],c=name.toLowerCase();
-  const grid=$('#piet-grid'); grid.innerHTML='';
-  const N=12;
-  for(let r=0;r<N;r++) for(let col=0;col<N;col++){
-    const d=document.createElement('span'); d.className='piet-codel';
-    let color='#fff';
-    if(r===0||col===0||r===N-1||col===N-1) color='#111';
-    else if(r<=4 && col<=4) color=((r+col)%3===0?pietLight[a]:(r+col)%3===1?pietBase[a]:pietDark[a]);
-    else if(r<=4 && col>=7) color=((r+col)%3===0?pietLight[b]:(r+col)%3===1?pietBase[b]:pietDark[b]);
-    else if(r>=7 && col>=3 && col<=8) color=((r+col)%3===0?pietLight[c]:(r+col)%3===1?pietBase[c]:pietDark[c]);
-    else if((r===5||r===6) && col>1 && col<10) color=(col%2?'#fff':'#000');
-    else color=((r*3+col)%5===0?'#000':'#fff');
-    d.style.background=color; grid.appendChild(d);
-  }
-  grid.setAttribute('aria-label',`${a} and ${b} flowing through a compact square codel grid toward ${c}`);
+const PIET_PALETTE={
+  red:['#ffc0c0','#ff0000','#c00000'],
+  yellow:['#ffffc0','#ffff00','#c0c000'],
+  green:['#c0ffc0','#00ff00','#00c000'],
+  cyan:['#c0ffff','#00ffff','#00c0c0'],
+  blue:['#c0c0ff','#0000ff','#0000c0'],
+  magenta:['#ffc0ff','#ff00ff','#c000c0']
+};
+function pietFamily(name){
+  if(name==='purple') return 'magenta';
+  if(name==='orange') return 'yellow';
+  return PIET_PALETTE[name]?name:'green';
 }
+function sourcePiet(){
+  const a=$('#piet-a').value,b=$('#piet-b').value,[name]=mixMap[`${a}|${b}`],resultFamily=pietFamily(name.toLowerCase());
+  const canvas=$('#piet-canvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const N=16, size=canvas.width/N;
+  const WHITE='#ffffff', BLACK='#000000';
+  const cells=Array.from({length:N},()=>Array(N).fill(WHITE));
+  const fillRect=(r0,r1,c0,c1,family,phase=0)=>{
+    const pal=PIET_PALETTE[family];
+    for(let r=r0;r<=r1;r++) for(let c=c0;c<=c1;c++) cells[r][c]=pal[(r+c+phase)%3];
+  };
+  // A compact two-dimensional Piet-like painting: two input regions flow into a result region.
+  fillRect(1,5,1,5,a,0);
+  fillRect(1,5,10,14,b,1);
+  fillRect(10,14,5,10,resultFamily,2);
+  fillRect(2,3,6,9,'yellow',0);
+  fillRect(6,9,7,8,'green',1);
+  fillRect(8,9,3,12,'cyan',2);
+  // Black walls create clear 2-D geometry while white remains traversable/no-op space.
+  for(let i=0;i<N;i++){cells[0][i]=BLACK;cells[N-1][i]=BLACK;cells[i][0]=BLACK;cells[i][N-1]=BLACK;}
+  for(let c=3;c<=12;c++) cells[6][c]=BLACK;
+  for(let r=6;r<=10;r++) cells[r][3]=BLACK;
+  for(let r=7;r<=10;r++) cells[r][12]=BLACK;
+  cells[6][7]=PIET_PALETTE.green[1]; cells[6][8]=PIET_PALETTE.green[2];
+  cells[8][3]=PIET_PALETTE.cyan[1]; cells[8][12]=PIET_PALETTE.cyan[2];
+
+  ctx.imageSmoothingEnabled=false;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let r=0;r<N;r++) for(let c=0;c<N;c++){
+    ctx.fillStyle=cells[r][c];
+    ctx.fillRect(c*size,r*size,size,size);
+  }
+  canvas.setAttribute('aria-label',`Square Piet codel image for ${a} plus ${b}, producing ${name.toLowerCase()}`);
+}
+function downloadPiet(){
+  const canvas=$('#piet-canvas');
+  const a=$('#piet-a').value,b=$('#piet-b').value,[name]=mixMap[`${a}|${b}`];
+  canvas.toBlob(blob=>{
+    if(!blob) return;
+    const url=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=url; link.download=`piet-${a}-${b}-${name.toLowerCase()}.png`;
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),0);
+  },'image/png');
+}
+$('#piet-download')?.addEventListener('click',downloadPiet);
 
 function sourceHexagony(){
   const n=Math.max(1,safeInt('#hex-n',1)), centered=$('#hex-mode').value==='centered';
