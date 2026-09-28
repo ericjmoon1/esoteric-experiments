@@ -605,3 +605,103 @@ pre.code, pre.revealed-code {
   border-color: #292a27 !important;
   border-left-color: var(--local-accent) !important;
 }
+
+/* Portfolio-level information blocks */
+.info-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.info-block {
+  min-width: 0;
+}
+.info-block p {
+  margin: 7px 0 0;
+  color: #4d4d47;
+  font-size: 14px;
+  line-height: 1.62;
+}
+.learn-link {
+  display: inline-block;
+  margin-top: 9px;
+  color: #454541;
+  font-size: 12px;
+  text-underline-offset: 3px;
+}
+
+/* Rockstar match UI */
+.rps-scoreline {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.rps-scoreline span {
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  background: #f7f7f2;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4d4d47;
+}
+#rps-buttons {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+#rps-buttons button {
+  min-width: 0;
+  padding: 10px 6px;
+  font-size: 12px;
+}
+
+/* Befunge maze library */
+#befunge .maze-wrap {
+  margin-top: 14px;
+}
+#maze-select {
+  max-width: 260px;
+}
+
+/* MOON as a language, not just a playground */
+.moon-about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 18px;
+  margin: 0 0 30px 96px;
+  max-width: 900px;
+}
+.moon-about-card {
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line);
+}
+.moon-about-card p {
+  margin: 8px 0 0;
+  color: #4d4d47;
+  font-size: 14px;
+  line-height: 1.62;
+}
+.moon-about-card a {
+  text-underline-offset: 3px;
+}
+
+/* Keep the editorial layout clean on smaller screens. */
+@media (max-width: 900px) {
+  .info-grid,
+  .moon-about-grid {
+    grid-template-columns: 1fr;
+  }
+  .moon-about-grid {
+    margin-left: 0;
+  }
+}
+@media (max-width: 620px) {
+  .rps-scoreline {
+    grid-template-columns: 1fr;
+  }
+  #rps-buttons {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+}
