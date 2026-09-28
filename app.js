@@ -93,16 +93,12 @@ function runWhitespace() {
   }
 }
 $('#ws-run').addEventListener('click', () => protect(runWhitespace, '#ws-result'));
-$('#ws-reveal').addEventListener('click', async () => {
+$('#ws-reveal').addEventListener('click', () => {
   const vis = $('#ws-visible'), empty = $('#ws-empty'), btn = $('#ws-reveal');
-  if (!vis.hidden) { vis.hidden = true; empty.hidden = false; btn.textContent = 'Reveal spaces, tabs, and line feeds'; return; }
-  try {
-    const raw = await fetch('programs/whitespace/invisible_day_finder.ws').then(r => r.text());
-    vis.textContent = raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵\n');
-  } catch {
-    vis.textContent = await fetch('programs/whitespace/invisible_day_finder.visible.txt').then(r => r.text());
-  }
-  empty.hidden = true; vis.hidden = false; btn.textContent = 'Hide revealed whitespace';
+  const showing = !vis.hidden;
+  vis.hidden = showing;
+  empty.hidden = !showing;
+  btn.textContent = showing ? 'Reveal generated whitespace' : 'Hide revealed whitespace';
 });
 
 // 03 Piet
@@ -386,3 +382,216 @@ $('#moon-run').addEventListener('click',()=>{try{resetMoonState();while(!moonSta
 $('#moon-source').addEventListener('input',()=>{moonState=null;renderMoon();});
 $('#moon-input').addEventListener('input',()=>{moonState=null;renderMoon();});
 loadMoonExample(); resetMoonState();
+
+
+// -----------------------------------------------------------------------------
+// Live source views
+// The controls on the right are also the source generator. These views reset on
+// refresh; nothing is stored in the browser.
+// -----------------------------------------------------------------------------
+function putSource(id, text) {
+  const el = $(id);
+  if (el) el.textContent = text;
+}
+function watchSource(ids, fn) {
+  ids.forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('input', fn);
+    el.addEventListener('change', fn);
+  });
+}
+function safeNumber(id, fallback = 0) {
+  const n = Number($(id)?.value);
+  return Number.isFinite(n) ? n : fallback;
+}
+function safeInt(id, fallback = 0) { return Math.trunc(safeNumber(id, fallback)); }
+
+function sourceCow() {
+  const a=safeNumber('#cow-a'), b=safeNumber('#cow-b'), op=$('#cow-op').value;
+  if (op==='/' && b===0) { putSource('#cow-source-view','[[ division by zero ]]'); return; }
+  const v=op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:a/b;
+  const symbol=op==='*'?'×':op==='/'?'÷':op;
+  if (!Number.isInteger(v) || Math.abs(v)>500) {
+    putSource('#cow-source-view',`[[ ${a} ${symbol} ${b} = ${Number(v.toFixed(6))} ]]\n\noom\nmoO\noom\n\n[[ browser companion handles this non-small-integer case ]]`);
+    return;
+  }
+  const steps=(v>=0?'MoO ':'MOo ').repeat(Math.abs(v)).trim();
+  putSource('#cow-source-view',`[[ ${a} ${symbol} ${b} = ${v} ]]\nOOO\n${steps}${steps?'\n':''}OOM`);
+}
+
+function wsPushNumber(n){
+  const sign=n<0?'\t':' ';
+  const bits=Math.abs(n).toString(2).replace(/0/g,' ').replace(/1/g,'\t');
+  return '  '+sign+bits+'\n';
+}
+const WS_OUT_CHAR='\t\n  ';
+function whitespaceProgramFor(text){
+  return [...text].map(ch=>wsPushNumber(ch.codePointAt(0))+WS_OUT_CHAR).join('');
+}
+function whitespaceCurrentText(){
+  try{
+    const {y,date}=parseMMDDYYYY($('#ws-date').value), mode=$('#ws-mode').value;
+    if(mode==='weekday') return ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][date.getUTCDay()];
+    if(mode==='dayofyear') return `DAY ${Math.floor((date.getTime()-Date.UTC(y,0,1))/86400000)+1}`;
+    return (y%4===0&&(y%100!==0||y%400===0))?'LEAP YEAR':'COMMON YEAR';
+  }catch{return 'INVALID DATE';}
+}
+function sourceWhitespace(){
+  const raw=whitespaceProgramFor(whitespaceCurrentText());
+  $('#ws-visible').textContent=raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵\n');
+}
+
+const pietBase={red:'#ff0000',yellow:'#ffff00',blue:'#0000ff',orange:'#ff8a00',purple:'#800080',green:'#00a050'};
+const pietLight={red:'#ffc0c0',yellow:'#ffffc0',blue:'#c0c0ff',orange:'#ffd5a0',purple:'#d7b7e8',green:'#bce6c6'};
+const pietDark={red:'#c00000',yellow:'#c0c000',blue:'#0000c0',orange:'#bd5d00',purple:'#5b1b68',green:'#006f38'};
+function sourcePiet(){
+  const a=$('#piet-a').value,b=$('#piet-b').value,[name]=mixMap[`${a}|${b}`],c=name.toLowerCase();
+  const grid=$('#piet-grid'); grid.innerHTML='';
+  const N=12;
+  for(let r=0;r<N;r++) for(let col=0;col<N;col++){
+    const d=document.createElement('span'); d.className='piet-codel';
+    let color='#fff';
+    if(r===0||col===0||r===N-1||col===N-1) color='#111';
+    else if(r<=4 && col<=4) color=((r+col)%3===0?pietLight[a]:(r+col)%3===1?pietBase[a]:pietDark[a]);
+    else if(r<=4 && col>=7) color=((r+col)%3===0?pietLight[b]:(r+col)%3===1?pietBase[b]:pietDark[b]);
+    else if(r>=7 && col>=3 && col<=8) color=((r+col)%3===0?pietLight[c]:(r+col)%3===1?pietBase[c]:pietDark[c]);
+    else if((r===5||r===6) && col>1 && col<10) color=(col%2?'#fff':'#000');
+    else color=((r*3+col)%5===0?'#000':'#fff');
+    d.style.background=color; grid.appendChild(d);
+  }
+  grid.setAttribute('aria-label',`${a} and ${b} flowing through a compact square codel grid toward ${c}`);
+}
+
+function sourceHexagony(){
+  const n=Math.max(1,safeInt('#hex-n',1)), centered=$('#hex-mode').value==='centered';
+  const core=centered?`3 ${n} ${n-1} * * 1 +`:`${n} 2 ${n} * 1 - *`;
+  putSource('#hexagony-source-view',`        . . .\n      . ${centered?'C':'H'} . .\n    . ${n} . . .\n  . ${core} .\n    . . . . .\n      . O @ .\n        . . .`);
+}
+function sourceArnold(){
+  const n=Math.max(1,Math.min(20,safeInt('#arnold-start',5))), line=$('#arnold-line').value;
+  putSource('#arnoldc-source-view',`IT'S SHOWTIME\nHEY CHRISTMAS TREE n\nYOU SET US UP ${n}\nHEY CHRISTMAS TREE running\nYOU SET US UP @NO PROBLEMO\nSTICK AROUND running\nTALK TO THE HAND n\nGET TO THE CHOPPER n\nHERE IS MY INVITATION n\nGET DOWN 1\nENOUGH TALK\nGET TO THE CHOPPER running\nHERE IS MY INVITATION n\nLET OFF SOME STEAM BENNET 0\nENOUGH TALK\nCHILL\nTALK TO THE HAND "${line}"\nYOU HAVE BEEN TERMINATED`);
+}
+function sourceBeatnik(){
+  const text=$('#beatnik-word').value.toUpperCase(), letters=[...text].filter(c=>/[A-Z]/.test(c));
+  const lines=letters.map(c=>`${c.padEnd(2)} ${String(scrabble[c]||0).padStart(2)} points`);
+  const total=letters.reduce((s,c)=>s+(scrabble[c]||0),0);
+  putSource('#beatnik-source-view',`current phrase\n──────────────\n${text||'(empty)'}\n\nScrabble-valued words drive Beatnik opcodes.\nThis live view exposes the current score map:\n\n${lines.join('\n')}\n──────────────\nTOTAL ${total}`);
+}
+function sourceChef(){
+  const batches=Math.max(0,safeInt('#chef-batches')), per=Math.max(0,safeInt('#chef-per')), eaten=Math.max(0,safeInt('#chef-eaten'));
+  putSource('#chef-source-view',`Current Cookie Batch.\n\nIngredients.\n${per} g cookies per batch\n${batches} g batches\n${eaten} g taste tested\n\nMethod.\nPut batches into mixing bowl.\nCombine cookies per batch into mixing bowl.\nRemove taste tested from mixing bowl.\nPour contents of the mixing bowl into the baking dish.\n\nServes 1.`);
+}
+function sourceShakespeare(){
+  const a=safeNumber('#spl-a'),b=safeNumber('#spl-b'),op=$('#spl-op').value,words=op==='>'?'greater than':op==='<'?'less than':'equal to';
+  putSource('#shakespeare-source-view',`To Be or Not To Be.\n\nRomeo, whose present value is ${a}.\nJuliet, whose present value is ${b}.\n\nAct I: The Comparison.\nScene I: The Question.\n\n[Enter Romeo and Juliet]\n\nRomeo:\nAm I ${words} you?\n\nJuliet:\nLet the truth of that comparison decide whether we are to be.`);
+}
+function sourceLOL(){
+  const age=Math.max(0,safeNumber('#lol-age')),method=$('#lol-method').value;
+  if(method==='simple') putSource('#lolcode-source-view',`HAI 1.2\nI HAS A AGE ITZ ${age}\nI HAS A HUMAN ITZ PRODUKT OF AGE AN 7\nVISIBLE "APPROX HUMAN YEARS: " HUMAN\nKTHXBYE`);
+  else {
+    let human=age<=1?15*age:age<=2?15+(age-1)*9:24+(age-2)*4;
+    putSource('#lolcode-source-view',`HAI 1.2\nBTW staged life-age choice from the controls\nI HAS A AGE ITZ ${age}\nI HAS A HUMAN ITZ ${Number(human.toFixed(1))}\nVISIBLE "STAGED HUMAN YEARS: " HUMAN\nKTHXBYE`);
+  }
+}
+function sourceRockstar(){
+  const move=rpsMove||'choose a move';
+  putSource('#rockstar-source-view',`The Crowd is waiting\nMy move is ${move}\nThe rival is mysterious\n\nListen to my move\nListen to the rival\n\nIf my move is the rival\nShout "ENCORE"\n\nOtherwise\nShout the winner\n\n(current browser round: ${move})`);
+}
+function sourceIntercal(){
+  const a=safeNumber('#inter-a'),b=safeNumber('#inter-b'),op=$('#inter-op').value,fmt=$('#inter-format').value;
+  putSource('#intercal-source-view',`PLEASE NOTE CURRENT VALUES: ${a} ${op} ${b}\nPLEASE NOTE OUTPUT MODE: ${fmt.toUpperCase()}\n\nPLEASE DO :1 <- #${Math.trunc(Math.abs(a))}\nDO :2 <- #${Math.trunc(Math.abs(b))}\nPLEASE DO READ OUT :1\nDO READ OUT :2\nDO GIVE UP\n\nINTERCAL is intentionally perverse; this view tracks the current choices while the reference file shows the original Roman-numeral experiment.`);
+}
+function sourceOok(){
+  const apes=Math.max(0,safeInt('#ook-apes')),rate=Math.max(0,safeInt('#ook-rate')),days=Math.max(0,safeInt('#ook-days'));
+  putSource('#ook-source-view',`Ook! Ook?   [apes = ${apes}]\nOok. Ook.   [bananas / ape / day = ${rate}]\nOok! Ook!   [days = ${days}]\n\nOok. Ook? Ook. Ook? Ook! Ook.\nOok! Ook? Ook. Ook! Ook! Ook.\n\nCurrent total: ${apes*rate*days} bananas\n\nThe bracketed values are the live companion settings; the reference file contains the original Ook! program.`);
+}
+function sourceChicken(){
+  const c=Math.max(0,safeInt('#chick-count')),rate=Math.max(0,safeNumber('#chick-rate')),days=Math.max(0,safeInt('#chick-days'));
+  const rows=Math.max(1,Math.min(8,c));
+  putSource('#chicken-source-view',`current flock: ${c}\nrate: ${rate}\ndays: ${days}\n\n${Array.from({length:rows},(_,i)=>'chicken '.repeat((i%6)+1).trim()).join('\n')}\n\n≈ ${Math.round(c*rate*days)} eggs`);
+}
+let malbolgeReference="(=BA#9\"=<;:3y7x54-21q/p-,+*)\"!h%B0/.\n~P<\n<:(8&\n66#\"!~}|{zyxwvu\ngJ%\n";
+function sourceMalbolge(){
+  const n=Math.max(1,Math.min(25,safeInt('#mal-start',9))),base=Number($('#mal-base').value);
+  putSource('#malbolge-source-view',`[browser companion: start ${n}, base ${base}]\n\n${malbolgeReference}\n\nMalbolge source is self-modifying; the reference program itself stays fixed while the companion settings above update.`);
+}
+function sourceJSFuck(){
+  let expr=$('#jsf-expr').value.trim();
+  try{
+    if(!/^[0-9+\-*/%().\s]+$/.test(expr)) throw 0;
+    const v=Function(`"use strict";return (${expr})`)();
+    if(Number.isInteger(v)&&v>=0&&v<=60) putSource('#jsfuck-source-view',jsfuckInteger(v));
+    else putSource('#jsfuck-source-view','// generated source appears for an integer result from 0 to 60');
+  }catch{putSource('#jsfuck-source-view','// enter a valid small arithmetic expression');}
+}
+function sourceBefunge(){
+  const rows=mazeRows.map((row,r)=>[...row].map((ch,c)=>mazePos.r===r&&mazePos.c===c?'@':ch).join(''));
+  putSource('#befunge-source-view',rows.join('\n'));
+}
+function bfPrintProgram(text){
+  let cur=0,out='';
+  for(const ch of [...text]){
+    const target=ch.codePointAt(0); let delta=target-cur;
+    if(delta>0) out+='+'.repeat(delta); else out+='-'.repeat(-delta);
+    out+='.'; cur=target;
+  }
+  return out;
+}
+function sourceBrainfuck(){
+  const msg=$('#bf-message').value,raw=Math.max(0,Math.min(25,safeInt('#bf-shift',3))),mode=$('#bf-mode').value;
+  const result=shiftText(msg,mode==='encode'?raw:-raw);
+  putSource('#brainfuck-source-view',bfPrintProgram(result));
+}
+function sourceAHHH(){
+  const n=safeNumber('#ahhh-n'),op=$('#ahhh-op').value;
+  const count=Math.max(1,Math.min(24,Math.abs(Math.trunc(n))));
+  putSource('#ahhh-source-view',`${'A'.repeat(op==='cube'?3:2)}${'H'.repeat(count)}\n${'a'.repeat(op==='cube'?3:2)}${'h'.repeat(Math.max(1,Math.floor(count/2)))}\n\n[current choice: ${op}(${n})]`);
+}
+function sourceHQ(){ putSource('#hq9plus-source-view',$('#hq-command').value); }
+
+function initLiveSources(){
+  const entries=[
+    [['#cow-a','#cow-b','#cow-op'],sourceCow],
+    [['#ws-date','#ws-mode'],sourceWhitespace],
+    [['#piet-a','#piet-b'],sourcePiet],
+    [['#hex-n','#hex-mode'],sourceHexagony],
+    [['#arnold-start','#arnold-line'],sourceArnold],
+    [['#beatnik-word'],sourceBeatnik],
+    [['#chef-batches','#chef-per','#chef-eaten'],sourceChef],
+    [['#spl-a','#spl-op','#spl-b'],sourceShakespeare],
+    [['#lol-age','#lol-method'],sourceLOL],
+    [[],sourceRockstar],
+    [['#inter-a','#inter-op','#inter-b','#inter-format'],sourceIntercal],
+    [['#ook-apes','#ook-rate','#ook-days'],sourceOok],
+    [['#chick-count','#chick-rate','#chick-days'],sourceChicken],
+    [['#mal-start','#mal-base'],sourceMalbolge],
+    [['#jsf-expr'],sourceJSFuck],
+    [[],sourceBefunge],
+    [['#bf-message','#bf-shift','#bf-mode'],sourceBrainfuck],
+    [['#ahhh-n','#ahhh-op'],sourceAHHH],
+    [['#hq-command'],sourceHQ]
+  ];
+  entries.forEach(([ids,fn])=>{watchSource(ids,fn);fn();});
+  $$('#rps-buttons button').forEach(b=>b.addEventListener('click',sourceRockstar));
+  $$('.maze-controls button').forEach(b=>b.addEventListener('click',sourceBefunge));
+  $('#maze-reset').addEventListener('click',sourceBefunge);
+  $('#cow-run').addEventListener('click',sourceCow);
+  $('#ws-run').addEventListener('click',sourceWhitespace);
+  $('#piet-run').addEventListener('click',sourcePiet);
+  $('#hex-run').addEventListener('click',sourceHexagony);
+  $('#arnold-run').addEventListener('click',sourceArnold);
+  $('#beatnik-run').addEventListener('click',sourceBeatnik);
+  $('#chef-run').addEventListener('click',sourceChef);
+  $('#spl-run').addEventListener('click',sourceShakespeare);
+  $('#lol-run').addEventListener('click',sourceLOL);
+  $('#inter-run').addEventListener('click',sourceIntercal);
+  $('#ook-run').addEventListener('click',sourceOok);
+  $('#chick-run').addEventListener('click',sourceChicken);
+  $('#mal-run').addEventListener('click',sourceMalbolge);
+  $('#jsf-run').addEventListener('click',sourceJSFuck);
+  $('#bf-run').addEventListener('click',sourceBrainfuck);
+  $('#ahhh-run').addEventListener('click',sourceAHHH);
+  $('#hq-run').addEventListener('click',sourceHQ);
+}
+initLiveSources();
