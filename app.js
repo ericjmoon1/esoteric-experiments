@@ -294,7 +294,7 @@ function runBF(){
   const msg=$('#bf-message').value, raw=integerValue('#bf-shift','shift'); if(raw<0||raw>25) throw new Error('Choose a shift from 0 to 25.');
   const mode=$('#bf-mode').value, s=mode==='encode'?raw:-raw, result=shiftText(msg,s);
   $('#bf-answer').textContent=result||'(empty message)';
-  const signs=(mode==='encode'?'+':'-').repeat(raw); $('#bf-fragment').textContent=`,${signs}.`;
+  const signs=(mode==='encode'?'+':'-').repeat(raw);
   $('#bf-detail').textContent=`One-character version: ,${signs}.`;
 }
 $('#bf-run').addEventListener('click',()=>protect(runBF,'#brainfuck .result'));
@@ -455,10 +455,10 @@ function pietFamily(name){
   if(name==='orange') return 'yellow';
   return PIET_PALETTE[name]?name:'green';
 }
-function sourcePiet(){
+function buildPietImageDataURL(){
   const a=$('#piet-a').value,b=$('#piet-b').value,[name]=mixMap[`${a}|${b}`],resultFamily=pietFamily(name.toLowerCase());
-  const canvas=$('#piet-canvas');
-  if(!canvas) return;
+  const canvas=document.createElement('canvas');
+  canvas.width=384; canvas.height=384;
   const ctx=canvas.getContext('2d');
   const N=16, size=canvas.width/N;
   const WHITE='#ffffff', BLACK='#000000';
@@ -467,14 +467,15 @@ function sourcePiet(){
     const pal=PIET_PALETTE[family];
     for(let r=r0;r<=r1;r++) for(let c=c0;c<=c1;c++) cells[r][c]=pal[(r+c+phase)%3];
   };
-  // A compact two-dimensional Piet-like painting: two input regions flow into a result region.
+
+  // Compact two-dimensional codel composition.
   fillRect(1,5,1,5,a,0);
   fillRect(1,5,10,14,b,1);
   fillRect(10,14,5,10,resultFamily,2);
   fillRect(2,3,6,9,'yellow',0);
   fillRect(6,9,7,8,'green',1);
   fillRect(8,9,3,12,'cyan',2);
-  // Black walls create clear 2-D geometry while white remains traversable/no-op space.
+
   for(let i=0;i<N;i++){cells[0][i]=BLACK;cells[N-1][i]=BLACK;cells[i][0]=BLACK;cells[i][N-1]=BLACK;}
   for(let c=3;c<=12;c++) cells[6][c]=BLACK;
   for(let r=6;r<=10;r++) cells[r][3]=BLACK;
@@ -483,23 +484,28 @@ function sourcePiet(){
   cells[8][3]=PIET_PALETTE.cyan[1]; cells[8][12]=PIET_PALETTE.cyan[2];
 
   ctx.imageSmoothingEnabled=false;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
   for(let r=0;r<N;r++) for(let c=0;c<N;c++){
     ctx.fillStyle=cells[r][c];
     ctx.fillRect(c*size,r*size,size,size);
   }
-  canvas.setAttribute('aria-label',`Square Piet codel image for ${a} plus ${b}, producing ${name.toLowerCase()}`);
+  return {url:canvas.toDataURL('image/png'),label:`Square Piet codel image for ${a} plus ${b}, producing ${name.toLowerCase()}`};
+}
+function sourcePiet(){
+  const img=$('#piet-image');
+  if(!img) return;
+  const rendered=buildPietImageDataURL();
+  img.src=rendered.url;
+  img.alt=rendered.label;
 }
 function downloadPiet(){
-  const canvas=$('#piet-canvas');
+  const img=$('#piet-image');
   const a=$('#piet-a').value,b=$('#piet-b').value,[name]=mixMap[`${a}|${b}`];
-  canvas.toBlob(blob=>{
-    if(!blob) return;
-    const url=URL.createObjectURL(blob),link=document.createElement('a');
-    link.href=url; link.download=`piet-${a}-${b}-${name.toLowerCase()}.png`;
-    document.body.appendChild(link); link.click(); link.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),0);
-  },'image/png');
+  const link=document.createElement('a');
+  link.href=img.src;
+  link.download=`piet-${a}-${b}-${name.toLowerCase()}.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 $('#piet-download')?.addEventListener('click',downloadPiet);
 
