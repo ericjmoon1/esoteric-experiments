@@ -439,6 +439,8 @@ function whitespaceCurrentText(){
 }
 function sourceWhitespace(){
   const raw=whitespaceProgramFor(whitespaceCurrentText());
+  const empty=$('#ws-empty');
+  if(empty) empty.value=raw;
   $('#ws-visible').textContent=raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵\n');
 }
 
