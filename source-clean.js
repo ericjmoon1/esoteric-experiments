@@ -45,8 +45,7 @@
   }
 
   function refreshWhitespace() {
-    const blank = byId("ws-empty");
-    if (blank) blank.textContent = "";
+    /* app.js owns the real invisible Whitespace source. */
   }
 
   const scrabble = Object.fromEntries(Object.entries({
