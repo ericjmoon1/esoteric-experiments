@@ -375,12 +375,12 @@ function loadMoonExample(){
   const ex=moonExamples[$('#moon-example').value]; $('#moon-source').value=ex.src; $('#moon-input').value=ex.input; moonState=null; renderMoon();
 }
 function resetMoonState(){moonState=compileMoon($('#moon-source').value,$('#moon-input').value);renderMoon();}
-$('#moon-example').addEventListener('change',loadMoonExample);
-$('#moon-reset').addEventListener('click',()=>{loadMoonExample();resetMoonState();});
+$('#moon-example').addEventListener('change',()=>{loadMoonExample();resetMoonState();});
+$('#moon-reset').addEventListener('click',()=>{try{resetMoonState();}catch(e){$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
 $('#moon-step').addEventListener('click',()=>{try{if(!moonState)resetMoonState();moonStep(moonState);renderMoon();}catch(e){$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
 $('#moon-run').addEventListener('click',()=>{try{resetMoonState();while(!moonState.done)moonStep(moonState);renderMoon();}catch(e){$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
-$('#moon-source').addEventListener('input',()=>{moonState=null;renderMoon();});
-$('#moon-input').addEventListener('input',()=>{moonState=null;renderMoon();});
+$('#moon-source').addEventListener('input',()=>{try{resetMoonState();}catch(e){moonState=null;renderMoon();$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
+$('#moon-input').addEventListener('input',()=>{try{resetMoonState();}catch(e){moonState=null;renderMoon();$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
 loadMoonExample(); resetMoonState();
 
 
