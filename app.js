@@ -63,6 +63,7 @@ function runCow() {
   const a = numberValue('#cow-a'), b = numberValue('#cow-b'), op = $('#cow-op').value;
   if (op === '/' && b === 0) throw new Error('A cow cannot divide by zero.');
   const value = op === '+' ? a+b : op === '-' ? a-b : op === '*' ? a*b : a/b;
+  $('#cow-fragment').textContent = cowFragments[op];
   setResult('#cow-result', String(Number.isInteger(value) ? value : Number(value.toFixed(8))), `${a} ${op === '*' ? '×' : op === '/' ? '÷' : op} ${b}`);
 }
 $('#cow-run').addEventListener('click', () => protect(runCow, '#cow-result'));
@@ -406,25 +407,17 @@ function safeNumber(id, fallback = 0) {
 }
 function safeInt(id, fallback = 0) { return Math.trunc(safeNumber(id, fallback)); }
 
-function cowPrintProgram(text){
-  let current=0;
-  const code=['OOO'];
-  for(const ch of [...String(text)]){
-    const target=ch.codePointAt(0);
-    const delta=target-current;
-    const op=delta>=0?'MoO':'MOo';
-    for(let i=0;i<Math.abs(delta);i++) code.push(op);
-    code.push('Moo');
-    current=target;
-  }
-  return code.join(' ');
-}
 function sourceCow() {
   const a=safeNumber('#cow-a'), b=safeNumber('#cow-b'), op=$('#cow-op').value;
-  if(op==='/' && b===0){ putSource('#cow-source-view',''); return; }
+  if (op==='/' && b===0) { putSource('#cow-source-view','[[ division by zero ]]'); return; }
   const v=op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:a/b;
-  const shown=Number.isInteger(v)?String(v):String(Number(v.toFixed(8)));
-  putSource('#cow-source-view',cowPrintProgram(shown));
+  const symbol=op==='*'?'×':op==='/'?'÷':op;
+  if (!Number.isInteger(v) || Math.abs(v)>500) {
+    putSource('#cow-source-view',`[[ ${a} ${symbol} ${b} = ${Number(v.toFixed(6))} ]]\n\noom\nmoO\noom\n\n[[ browser companion handles this non-small-integer case ]]`);
+    return;
+  }
+  const steps=(v>=0?'MoO ':'MOo ').repeat(Math.abs(v)).trim();
+  putSource('#cow-source-view',`[[ ${a} ${symbol} ${b} = ${v} ]]\nOOO\n${steps}${steps?'\n':''}OOM`);
 }
 
 function wsPushNumber(n){
@@ -525,22 +518,11 @@ function sourceArnold(){
   const n=Math.max(1,Math.min(20,safeInt('#arnold-start',5))), line=$('#arnold-line').value;
   putSource('#arnoldc-source-view',`IT'S SHOWTIME\nHEY CHRISTMAS TREE n\nYOU SET US UP ${n}\nHEY CHRISTMAS TREE running\nYOU SET US UP @NO PROBLEMO\nSTICK AROUND running\nTALK TO THE HAND n\nGET TO THE CHOPPER n\nHERE IS MY INVITATION n\nGET DOWN 1\nENOUGH TALK\nGET TO THE CHOPPER running\nHERE IS MY INVITATION n\nLET OFF SOME STEAM BENNET 0\nENOUGH TALK\nCHILL\nTALK TO THE HAND "${line}"\nYOU HAVE BEEN TERMINATED`);
 }
-function beatnikWordForScore(n){
-  const tens=Math.floor(n/10), ones=n%10;
-  return 'z'.repeat(tens)+'a'.repeat(ones);
-}
-function beatnikProgramForText(text){
-  return [...String(text)].flatMap(ch=>[
-    'dare',
-    beatnikWordForScore(ch.codePointAt(0)),
-    'music'
-  ]).join('\n');
-}
 function sourceBeatnik(){
-  const text=$('#beatnik-word').value.toUpperCase();
-  const letters=[...text].filter(c=>/[A-Z]/.test(c));
+  const text=$('#beatnik-word').value.toUpperCase(), letters=[...text].filter(c=>/[A-Z]/.test(c));
+  const lines=letters.map(c=>`${c.padEnd(2)} ${String(scrabble[c]||0).padStart(2)} points`);
   const total=letters.reduce((s,c)=>s+(scrabble[c]||0),0);
-  putSource('#beatnik-source-view',beatnikProgramForText(String(total)));
+  putSource('#beatnik-source-view',`current phrase\n──────────────\n${text||'(empty)'}\n\nScrabble-valued words drive Beatnik opcodes.\nThis live view exposes the current score map:\n\n${lines.join('\n')}\n──────────────\nTOTAL ${total}`);
 }
 function sourceChef(){
   const batches=Math.max(0,safeInt('#chef-batches')), per=Math.max(0,safeInt('#chef-per')), eaten=Math.max(0,safeInt('#chef-eaten'));
@@ -552,74 +534,42 @@ function sourceShakespeare(){
 }
 function sourceLOL(){
   const age=Math.max(0,safeNumber('#lol-age')),method=$('#lol-method').value;
-  if(method==='simple'){
-    putSource('#lolcode-source-view',`HAI 1.2
-I HAS A AGE ITZ ${age}
-I HAS A HUMAN ITZ PRODUKT OF AGE AN 7
-VISIBLE HUMAN
-KTHXBYE`);
-  } else {
-    const human=age<=1?15*age:age<=2?15+(age-1)*9:24+(age-2)*4;
-    putSource('#lolcode-source-view',`HAI 1.2
-I HAS A AGE ITZ ${age}
-I HAS A HUMAN ITZ ${Number(human.toFixed(1))}
-VISIBLE HUMAN
-KTHXBYE`);
+  if(method==='simple') putSource('#lolcode-source-view',`HAI 1.2\nI HAS A AGE ITZ ${age}\nI HAS A HUMAN ITZ PRODUKT OF AGE AN 7\nVISIBLE "APPROX HUMAN YEARS: " HUMAN\nKTHXBYE`);
+  else {
+    let human=age<=1?15*age:age<=2?15+(age-1)*9:24+(age-2)*4;
+    putSource('#lolcode-source-view',`HAI 1.2\nBTW staged life-age choice from the controls\nI HAS A AGE ITZ ${age}\nI HAS A HUMAN ITZ ${Number(human.toFixed(1))}\nVISIBLE "STAGED HUMAN YEARS: " HUMAN\nKTHXBYE`);
   }
 }
 function sourceRockstar(){
-  const move=rpsMove||'rock';
-  putSource('#rockstar-source-view',`My move is "${move}"
-Listen to my move
-Shout my move`);
+  const move=rpsMove||'choose a move';
+  putSource('#rockstar-source-view',`The Crowd is waiting\nMy move is ${move}\nThe rival is mysterious\n\nListen to my move\nListen to the rival\n\nIf my move is the rival\nShout "ENCORE"\n\nOtherwise\nShout the winner\n\n(current browser round: ${move})`);
 }
 function sourceIntercal(){
-  const a=Math.trunc(Math.abs(safeNumber('#inter-a')));
-  const b=Math.trunc(Math.abs(safeNumber('#inter-b')));
-  const op=$('#inter-op').value;
-  const opLine=op==='+'?'PLEASE DO :3 <- :1 + :2':op==='-'?'PLEASE DO :3 <- :1 - :2':op==='*'?'PLEASE DO :3 <- :1 * :2':'PLEASE DO :3 <- :1 / :2';
-  putSource('#intercal-source-view',`PLEASE DO :1 <- #${a}
-DO :2 <- #${b}
-${opLine}
-DO READ OUT :3
-DO GIVE UP`);
-}
-function bfToOok(code){
-  const map={
-    '>':'Ook. Ook?','<':'Ook? Ook.','+':'Ook. Ook.','-':'Ook! Ook!',
-    '.':'Ook! Ook.',',':'Ook. Ook!','[':'Ook! Ook?',']':'Ook? Ook!'
-  };
-  return [...code].map(ch=>map[ch]||'').filter(Boolean).join(' ');
+  const a=safeNumber('#inter-a'),b=safeNumber('#inter-b'),op=$('#inter-op').value,fmt=$('#inter-format').value;
+  putSource('#intercal-source-view',`PLEASE NOTE CURRENT VALUES: ${a} ${op} ${b}\nPLEASE NOTE OUTPUT MODE: ${fmt.toUpperCase()}\n\nPLEASE DO :1 <- #${Math.trunc(Math.abs(a))}\nDO :2 <- #${Math.trunc(Math.abs(b))}\nPLEASE DO READ OUT :1\nDO READ OUT :2\nDO GIVE UP\n\nINTERCAL is intentionally perverse; this view tracks the current choices while the reference file shows the original Roman-numeral experiment.`);
 }
 function sourceOok(){
-  const apes=Math.max(0,safeInt('#ook-apes'));
-  const rate=Math.max(0,safeInt('#ook-rate'));
-  const days=Math.max(0,safeInt('#ook-days'));
-  const total=apes*rate*days;
-  putSource('#ook-source-view',bfToOok(bfPrintProgram(String(total))));
+  const apes=Math.max(0,safeInt('#ook-apes')),rate=Math.max(0,safeInt('#ook-rate')),days=Math.max(0,safeInt('#ook-days'));
+  putSource('#ook-source-view',`Ook! Ook?   [apes = ${apes}]\nOok. Ook.   [bananas / ape / day = ${rate}]\nOok! Ook!   [days = ${days}]\n\nOok. Ook? Ook. Ook? Ook! Ook.\nOok! Ook? Ook. Ook! Ook! Ook.\n\nCurrent total: ${apes*rate*days} bananas\n\nThe bracketed values are the live companion settings; the reference file contains the original Ook! program.`);
 }
 function sourceChicken(){
-  const c=Math.max(0,safeInt('#chick-count'));
-  const rate=Math.max(0,safeNumber('#chick-rate'));
-  const days=Math.max(0,safeInt('#chick-days'));
-  const total=Math.max(0,Math.round(c*rate*days));
-  const chickens=Math.max(10,total+10);
-  putSource('#chicken-source-view','chicken '.repeat(chickens).trim()+'\n');
+  const c=Math.max(0,safeInt('#chick-count')),rate=Math.max(0,safeNumber('#chick-rate')),days=Math.max(0,safeInt('#chick-days'));
+  const rows=Math.max(1,Math.min(8,c));
+  putSource('#chicken-source-view',`current flock: ${c}\nrate: ${rate}\ndays: ${days}\n\n${Array.from({length:rows},(_,i)=>'chicken '.repeat((i%6)+1).trim()).join('\n')}\n\n≈ ${Math.round(c*rate*days)} eggs`);
 }
-let malbolgeReference=let malbolgeReference="(=BA#9\"=<;:3y7x54-21q/p-,+*)\"!h%B0/.\n~P<\n<:(8&\n66#\"!~}|{zyxwvu\ngJ%\n";
+let malbolgeReference="(=BA#9\"=<;:3y7x54-21q/p-,+*)\"!h%B0/.\n~P<\n<:(8&\n66#\"!~}|{zyxwvu\ngJ%\n";
 function sourceMalbolge(){
-  putSource('#malbolge-source-view',malbolgeReference.trim());
+  const n=Math.max(1,Math.min(25,safeInt('#mal-start',9))),base=Number($('#mal-base').value);
+  putSource('#malbolge-source-view',`[browser companion: start ${n}, base ${base}]\n\n${malbolgeReference}\n\nMalbolge source is self-modifying; the reference program itself stays fixed while the companion settings above update.`);
 }
 function sourceJSFuck(){
-  const expr=$('#jsf-expr').value.trim();
+  let expr=$('#jsf-expr').value.trim();
   try{
     if(!/^[0-9+\-*/%().\s]+$/.test(expr)) throw 0;
     const v=Function(`"use strict";return (${expr})`)();
     if(Number.isInteger(v)&&v>=0&&v<=60) putSource('#jsfuck-source-view',jsfuckInteger(v));
-    else putSource('#jsfuck-source-view','');
-  }catch{
-    putSource('#jsfuck-source-view','');
-  }
+    else putSource('#jsfuck-source-view','// generated source appears for an integer result from 0 to 60');
+  }catch{putSource('#jsfuck-source-view','// enter a valid small arithmetic expression');}
 }
 function sourceBefunge(){
   const rows=mazeRows.map((row,r)=>[...row].map((ch,c)=>mazePos.r===r&&mazePos.c===c?'@':ch).join(''));
@@ -639,25 +589,10 @@ function sourceBrainfuck(){
   const result=shiftText(msg,mode==='encode'?raw:-raw);
   putSource('#brainfuck-source-view',bfPrintProgram(result));
 }
-function ahhhSetAndPrint(n){
-  n=Math.trunc(n);
-  const code=['AHHH','HHhh'];
-  if(n>=0){
-    const bits=n.toString(2);
-    for(const bit of bits){
-      code.push('HHhH');
-      if(bit==='1') code.push('HhhH');
-    }
-  } else {
-    for(let i=0;i<Math.abs(n);i++) code.push('HhHh');
-  }
-  code.push('hhHH');
-  return code.join(' ');
-}
 function sourceAHHH(){
   const n=safeNumber('#ahhh-n'),op=$('#ahhh-op').value;
-  const v=op==='square'?n*n:n*n*n;
-  putSource('#ahhh-source-view',ahhhSetAndPrint(Number.isFinite(v)?v:0));
+  const count=Math.max(1,Math.min(24,Math.abs(Math.trunc(n))));
+  putSource('#ahhh-source-view',`${'A'.repeat(op==='cube'?3:2)}${'H'.repeat(count)}\n${'a'.repeat(op==='cube'?3:2)}${'h'.repeat(Math.max(1,Math.floor(count/2)))}\n\n[current choice: ${op}(${n})]`);
 }
 function sourceHQ(){ putSource('#hq9plus-source-view',$('#hq-command').value); }
 
