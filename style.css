@@ -533,3 +533,75 @@ pre.code, pre.revealed-code {
     min-height: 190px;
   }
 }
+
+/* Final unified source treatment */
+.code-frame {
+  background: #171816 !important;
+  color: #eeeeea !important;
+  border: 1px solid #292a27 !important;
+  border-left: 3px solid var(--local-accent) !important;
+  min-height: 220px !important;
+  max-height: 380px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+.code-frame pre,
+.code-frame .code {
+  color: #eeeeea !important;
+}
+.dynamic-source,
+.revealed-code {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* Whitespace is the one deliberate light source pane. */
+#whitespace .code-frame {
+  background: #ffffff !important;
+  color: #262626 !important;
+  border: 1px solid #cfcfc8 !important;
+  border-left: 3px solid var(--local-accent) !important;
+  min-height: 150px !important;
+  max-height: 150px !important;
+  overflow: hidden !important;
+}
+#whitespace .code-empty,
+#whitespace .revealed-code {
+  color: #262626 !important;
+  min-height: 0 !important;
+  max-height: 150px !important;
+  overflow: hidden !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+#whitespace .code-empty {
+  height: 150px;
+  padding: 0;
+}
+#whitespace .revealed-code {
+  padding: 12px 14px;
+}
+
+/* Spatial languages keep their geometry intact. */
+#hexagony .dynamic-source,
+#befunge .dynamic-source {
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+#hexagony .code-frame,
+#befunge .code-frame {
+  overflow-x: auto !important;
+}
+
+/* Remove all faux-paper exceptions. */
+#chef .code-frame,
+#shakespeare .code-frame,
+#rockstar .code-frame {
+  background: #171816 !important;
+  color: #eeeeea !important;
+  border-color: #292a27 !important;
+  border-left-color: var(--local-accent) !important;
+}
