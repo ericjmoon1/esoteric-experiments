@@ -81,23 +81,64 @@ I HAS A HUMAN ITZ PRODUKT OF AGE AN 7
 VISIBLE HUMAN
 KTHXBYE`);
     } else {
-      const human = age <= 1 ? 15 * age : age <= 2 ? 15 + (age - 1) * 9 : 24 + (age - 2) * 4;
       setCode("lolcode-source-view",
 `HAI 1.2
 I HAS A AGE ITZ ${age}
-I HAS A HUMAN ITZ ${Number(human.toFixed(1))}
+I HAS A HUMAN ITZ 0
+
+BOTH SAEM AGE AN SMALLR OF AGE AN 1
+O RLY?
+  YA RLY
+    HUMAN R PRODUKT OF AGE AN 15
+  NO WAI
+    BOTH SAEM AGE AN SMALLR OF AGE AN 2
+    O RLY?
+      YA RLY
+        HUMAN R SUM OF 15 AN PRODUKT OF DIFF OF AGE AN 1 AN 9
+      NO WAI
+        HUMAN R SUM OF 24 AN PRODUKT OF DIFF OF AGE AN 2 AN 4
+    OIC
+OIC
+
 VISIBLE HUMAN
 KTHXBYE`);
     }
   }
 
   let rockMove = "rock";
-  function refreshRockstar(move = rockMove) {
+  let rockRival = "mysterious";
+
+  function refreshRockstar(move = rockMove, rival = rockRival) {
     rockMove = move;
+    rockRival = rival;
+    const rivalLine = rival === "mysterious"
+      ? "The rival is mysterious"
+      : `The rival is "${rival}"`;
+
     setCode("rockstar-source-view",
 `My move is "${rockMove}"
-Listen to my move
-Shout my move`);
+${rivalLine}
+
+If my move is the rival
+  Shout "ENCORE"
+
+If my move is "rock" and the rival is "scissors"
+  Shout "YOU WIN"
+
+If my move is "paper" and the rival is "rock"
+  Shout "YOU WIN"
+
+If my move is "scissors" and the rival is "paper"
+  Shout "YOU WIN"
+
+If my move is "rock" and the rival is "paper"
+  Shout "ROCKSTAR WINS"
+
+If my move is "paper" and the rival is "scissors"
+  Shout "ROCKSTAR WINS"
+
+If my move is "scissors" and the rival is "rock"
+  Shout "ROCKSTAR WINS"`);
   }
 
   function refreshIntercal() {
@@ -190,8 +231,14 @@ gJ%`;
   }
 
   for (const button of document.querySelectorAll("#rps-buttons button")) {
-    button.addEventListener("click", () => refreshRockstar(button.dataset.move || "rock"));
+    button.addEventListener("click", () => refreshRockstar(button.dataset.move || "rock", "mysterious"));
   }
+
+  byId("rps-run")?.addEventListener("click", () => {
+    const detail = byId("rps-detail")?.textContent || "";
+    const match = detail.match(/Rockstar:\s*(ROCK|PAPER|SCISSORS)/i);
+    refreshRockstar(rockMove, match ? match[1].toLowerCase() : "mysterious");
+  });
 
   for (const [id, fn] of [
     ["cow-run",refreshCow],["beatnik-run",refreshBeatnik],["lol-run",refreshLOL],
