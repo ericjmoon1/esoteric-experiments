@@ -757,3 +757,56 @@ pre.code, pre.revealed-code {
   overflow-wrap: anywhere !important;
   word-break: break-word !important;
 }
+
+/* Whitespace single-field source viewer */
+#whitespace .whitespace-source-frame {
+  height: 160px !important;
+  min-height: 160px !important;
+  max-height: 160px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+#whitespace .whitespace-source {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
+  margin: 0;
+  padding: 12px 14px;
+  resize: none;
+  overflow: hidden;
+  border: 0;
+  outline: 0;
+  background: #fff !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  caret-color: #666;
+  font: 11px/1.35 Consolas, "Liberation Mono", monospace;
+  white-space: pre-wrap;
+  user-select: text;
+  cursor: text;
+}
+#whitespace .whitespace-source::selection {
+  background: rgba(45, 95, 190, .30);
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+#whitespace .whitespace-source.revealed {
+  color: #262626 !important;
+  -webkit-text-fill-color: #262626 !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#whitespace .whitespace-source.revealed::selection {
+  background: rgba(45, 95, 190, .22);
+  color: #262626 !important;
+  -webkit-text-fill-color: #262626 !important;
+}
+#whitespace .source-tools {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
