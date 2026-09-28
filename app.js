@@ -93,12 +93,27 @@ function runWhitespace() {
   }
 }
 $('#ws-run').addEventListener('click', () => protect(runWhitespace, '#ws-result'));
+function renderWhitespaceSource(raw){
+  const box=$('#ws-source');
+  const revealed=box.dataset.revealed==='true';
+  box.value=revealed
+    ? raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵')
+    : raw;
+  box.classList.toggle('revealed',revealed);
+  box.setAttribute('aria-label',revealed?'Whitespace source with visible character markers':'Invisible Whitespace source code');
+}
 $('#ws-reveal').addEventListener('click', () => {
-  const vis = $('#ws-visible'), empty = $('#ws-empty'), btn = $('#ws-reveal');
-  const showing = !vis.hidden;
-  vis.hidden = showing;
-  empty.hidden = !showing;
-  btn.textContent = showing ? 'Reveal generated whitespace' : 'Hide revealed whitespace';
+  const box=$('#ws-source');
+  const raw=box.dataset.raw||'';
+  const revealed=box.dataset.revealed!=='true';
+  box.dataset.revealed=String(revealed);
+  renderWhitespaceSource(raw);
+  $('#ws-reveal').textContent=revealed?'Hide characters':'Reveal characters';
+});
+$('#ws-select').addEventListener('click', () => {
+  const box=$('#ws-source');
+  box.focus();
+  box.select();
 });
 
 // 03 Piet
@@ -439,9 +454,11 @@ function whitespaceCurrentText(){
 }
 function sourceWhitespace(){
   const raw=whitespaceProgramFor(whitespaceCurrentText());
-  const empty=$('#ws-empty');
-  if(empty) empty.value=raw;
-  $('#ws-visible').textContent=raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵');
+  const box=$('#ws-source');
+  if(!box) return;
+  box.dataset.raw=raw;
+  if(!box.dataset.revealed) box.dataset.revealed='false';
+  renderWhitespaceSource(raw);
 }
 
 const PIET_PALETTE={
