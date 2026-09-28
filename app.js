@@ -63,7 +63,6 @@ function runCow() {
   const a = numberValue('#cow-a'), b = numberValue('#cow-b'), op = $('#cow-op').value;
   if (op === '/' && b === 0) throw new Error('A cow cannot divide by zero.');
   const value = op === '+' ? a+b : op === '-' ? a-b : op === '*' ? a*b : a/b;
-  $('#cow-fragment').textContent = cowFragments[op];
   setResult('#cow-result', String(Number.isInteger(value) ? value : Number(value.toFixed(8))), `${a} ${op === '*' ? '×' : op === '/' ? '÷' : op} ${b}`);
 }
 $('#cow-run').addEventListener('click', () => protect(runCow, '#cow-result'));
