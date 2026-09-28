@@ -490,3 +490,28 @@ input:hover, select:hover, textarea:hover { border-color: #7f7f78; }
   .piet-frame { width: min(100%, 340px); }
   .playbox { padding: 14px; }
 }
+
+/* Compact code-only source presentation */
+.code-frame {
+  min-height: 0 !important;
+  max-height: 300px;
+  overflow: auto;
+}
+pre.code, pre.revealed-code {
+  min-height: 0;
+}
+.dynamic-source {
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+#whitespace .code-frame {
+  min-height: 150px !important;
+}
+#befunge .code-frame {
+  max-width: 100%;
+}
+#jsfuck .dynamic-source,
+#chicken .dynamic-source {
+  white-space: pre !important;
+}
