@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Interactive experiments in esoteric programming languages, plus MOON, a small celestial emoji esolang.">
   <title>Esoteric Programming Languages — Eric Moon</title>
-  <link rel="stylesheet" href="style.css?v=20260928-2040">
+  <link rel="stylesheet" href="style.css?v=20260928-1528">
 </head>
 <body>
 <div class="site">
@@ -66,7 +66,7 @@
     <section class="experiment" id="whitespace" data-section style="--local-accent:#7c7c7c">
       <div class="experiment-header"><div class="section-number">02 / Whitespace</div><div><h2>Whitespace</h2><div class="project-title">Invisible Day Finder</div><p class="language-note">Whitespace ignores visible characters and treats only spaces, tabs, and line feeds as instructions. A valid program can therefore look completely blank.</p></div></div>
       <div class="workbench">
-        <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/whitespace/invisible_day_finder.ws" target="_blank">View full source code ↗</a></div><div class="code-frame"><div class="code-empty" id="ws-empty">The generated program is here.<br>It is made entirely of spaces, tabs, and line feeds.</div><pre class="revealed-code" id="ws-visible" hidden></pre></div><div class="source-tools"><button class="text-button" id="ws-reveal">Reveal generated whitespace</button></div></div>
+        <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/whitespace/invisible_day_finder.ws" target="_blank">View full source code ↗</a></div><div class="code-frame whitespace-source-frame"><textarea class="code-empty whitespace-raw" id="ws-empty" readonly spellcheck="false" aria-label="Invisible Whitespace source code"></textarea><pre class="revealed-code" id="ws-visible" hidden></pre></div><div class="source-tools"><button class="text-button" id="ws-reveal">Reveal generated whitespace</button></div></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">calendar companion</span></div><div class="playbox"><div class="form-grid two"><label>Date<input id="ws-date" inputmode="numeric" maxlength="8" value="09282026" aria-label="Date in MMDDYYYY"></label><label>Find<select id="ws-mode"><option value="weekday">weekday</option><option value="dayofyear">day of year</option><option value="leap">leap-year status</option></select></label></div><div class="action-row"><button class="action" id="ws-run">FIND IT</button></div><div class="result" id="ws-result" aria-live="polite"><div class="answer">MONDAY</div><div class="detail">September 28, 2026</div></div></div></div>
       </div>
       <div class="info-grid">
@@ -307,8 +307,8 @@
     <footer class="footer">Each experiment pairs interactive controls with a live source snippet for the current settings. Use “View full source code” to open the complete program where available. MOON is interpreted directly in the browser.</footer>
   </main>
 </div>
-<script src="app.js?v=20260928-2040"></script>
-<script src="source-clean.js?v=20260928-2040"></script>
-<script src="enhancements.js?v=20260928-2040"></script>
+<script src="app.js?v=20260928-1528"></script>
+<script src="source-clean.js?v=20260928-1528"></script>
+<script src="enhancements.js?v=20260928-1528"></script>
 </body>
 </html>
