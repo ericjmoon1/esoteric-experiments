@@ -1,0 +1,23 @@
+Listen to my move
+Listen to the rival
+
+If my move is the rival
+  Shout "ENCORE"
+
+If my move is "rock" and the rival is "scissors"
+  Shout "YOU WIN"
+
+If my move is "paper" and the rival is "rock"
+  Shout "YOU WIN"
+
+If my move is "scissors" and the rival is "paper"
+  Shout "YOU WIN"
+
+If my move is "rock" and the rival is "paper"
+  Shout "ROCKSTAR WINS"
+
+If my move is "paper" and the rival is "scissors"
+  Shout "ROCKSTAR WINS"
+
+If my move is "scissors" and the rival is "rock"
+  Shout "ROCKSTAR WINS"
