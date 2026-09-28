@@ -54,7 +54,7 @@
     <section class="experiment" id="cow" data-section style="--local-accent:#6b5637">
       <div class="experiment-header"><div class="section-number">01 / COW</div><div><h2>COW</h2><div class="project-title">Cowculator</div><p class="language-note">COW has twelve instructions, most written as capitalization variants of <code>moo</code>. The joke is that tiny changes in the same word become completely different operations.</p></div></div>
       <div class="workbench">
-        <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/cow/cowculator.cow" target="_blank">reference .cow file ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="cow-source-view"></pre></div></div>
+        <div class="source-column"><div class="column-head"><span class="micro-label">Source</span><a href="programs/cow/cowculator.cow" target="_blank">reference .cow file ↗</a></div><div class="code-frame"><pre class="code dynamic-source" id="cow-source-view"></pre></div><span id="cow-fragment" hidden></span></div>
         <div class="play-column"><div class="column-head"><span class="micro-label">Try it</span><span class="micro-label">arithmetic companion</span></div><div class="playbox"><div class="form-grid three"><label>First number<input id="cow-a" type="number" value="17"></label><label>Operation<select id="cow-op"><option value="+">+</option><option value="-">−</option><option value="*">×</option><option value="/">÷</option></select></label><label>Second number<input id="cow-b" type="number" value="25"></label></div><div class="action-row"><button class="action" id="cow-run">MOO</button></div><div class="result" id="cow-result" aria-live="polite"><div class="answer">42</div><div class="detail">17 + 25</div></div></div></div>
       </div>
       <div class="explanation"><div class="micro-label">Why this one</div><p>A calculator makes the language's tiny vocabulary visible: the same handful of commands must do all of the memory movement and arithmetic. The interactive companion lets you change both numbers and the operation instead of running one frozen example.</p></div>
@@ -246,6 +246,6 @@
     <footer class="footer">The controls update both the browser result and the source view beside it. Some source views are compact generated sketches for the current choices rather than full external interpreters; MOON is executed directly in the browser. Reference files are included in the repository.</footer>
   </main>
 </div>
-<script src="app.js?v=20260928-1925"></script>
+<script src="app.js?v=20260928-1940"></script>
 </body>
 </html>
