@@ -97,10 +97,24 @@ function renderWhitespaceSource(raw){
   const box=$('#ws-source');
   const revealed=box.dataset.revealed==='true';
   box.value=revealed
-    ? raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵')
+    ? raw.replace(/ /g,'·').replace(/\t/g,'⇥').replace(/\n/g,'↵\n')
     : raw;
   box.classList.toggle('revealed',revealed);
   box.setAttribute('aria-label',revealed?'Whitespace source with visible character markers':'Invisible Whitespace source code');
+
+  if(revealed){
+    const lines=(box.value.match(/\n/g)||[]).length+1;
+    const h=Math.min(330,Math.max(160,24+lines*12));
+    box.style.height=h+'px';
+    box.parentElement.style.height=h+'px';
+    box.parentElement.style.minHeight=h+'px';
+    box.parentElement.style.maxHeight=h+'px';
+  }else{
+    box.style.height='160px';
+    box.parentElement.style.height='160px';
+    box.parentElement.style.minHeight='160px';
+    box.parentElement.style.maxHeight='160px';
+  }
 }
 $('#ws-reveal').addEventListener('click', () => {
   const box=$('#ws-source');
@@ -141,9 +155,14 @@ $('#hex-run').addEventListener('click',()=>protect(runHex,'#hex-result'));
 
 // 05 ArnoldC
 function runArnold(){
-  const n=integerValue('#arnold-start','starting number'); if(n<1||n>20) throw new Error('Choose a starting number from 1 to 20.');
-  const nums=Array.from({length:n},(_,i)=>n-i).join(' · ');
-  setResult('#arnold-result',nums,$('#arnold-line').value);
+  const n=integerValue('#arnold-start','starting number');
+  const step=integerValue('#arnold-step','countdown step');
+  if(n<1||n>50) throw new Error('Choose a starting number from 1 to 50.');
+  if(step<1||step>10) throw new Error('Choose a countdown step from 1 to 10.');
+
+  const values=[];
+  for(let v=n;v>0;v-=step) values.push(v);
+  setResult('#arnold-result',values.join(' · '),'HASTA LA VISTA, BABY.');
 }
 $('#arnold-run').addEventListener('click',()=>protect(runArnold,'#arnold-result'));
 
@@ -339,10 +358,18 @@ $('#hq-run').addEventListener('click',()=>{
 
 // MOON interpreter
 const moonExamples={
-  countdown:{src:'🌒🌒🌒🌒🌒\n🪐\n⭐🌘\n☄️',input:''},
+  countdown:{input:'5'},
   addition:{src:'📡🚀📡🛸\n🪐\n🌘🚀🌒🛸\n☄️\n🚀⭐',input:'7 35'},
   triple:{src:'📡\n🚀🌑\n🛸🪐🌘🚀🌒🌒🌒🛸☄️\n🚀⭐',input:'14'}
 };
+function moonCountdownSource(value){
+  const n=Math.trunc(Number(value));
+  if(!Number.isInteger(n)||n<1||n>30) throw new Error('COUNTDOWN START MUST BE AN INTEGER FROM 1 TO 30.');
+  return `${'🌒'.repeat(n)}
+🪐
+⭐🌘
+☄️`;
+}
 const moonAllowed=new Set(['🌒','🌘','🌑','🚀','🛸','🌕','⭐','📡','🪐','☄']);
 let moonState=null;
 function tokenizeMoon(src){
@@ -387,7 +414,23 @@ function renderMoon(){
   s.mem.slice(0,12).forEach((v,i)=>{const d=document.createElement('div');d.className='planet'+(i===s.p?' active':'');d.textContent=`${i}: ${v}${i===s.p?' 👨‍🚀':''}`;mem.appendChild(d);});
 }
 function loadMoonExample(){
-  const ex=moonExamples[$('#moon-example').value]; $('#moon-source').value=ex.src; $('#moon-input').value=ex.input; moonState=null; renderMoon();
+  const key=$('#moon-example').value;
+  const ex=moonExamples[key];
+
+  $('#moon-input').value=ex.input;
+  $('#moon-input-label').textContent=
+    key==='countdown' ? 'Countdown start' :
+    key==='addition' ? 'Addends' :
+    'Number to triple';
+
+  $('#moon-input').placeholder=
+    key==='countdown' ? '1–30' :
+    key==='addition' ? 'e.g. 7 35' :
+    'e.g. 14';
+
+  $('#moon-source').value=key==='countdown' ? moonCountdownSource(ex.input) : ex.src;
+  moonState=null;
+  renderMoon();
 }
 function resetMoonState(){moonState=compileMoon($('#moon-source').value,$('#moon-input').value);renderMoon();}
 $('#moon-example').addEventListener('change',()=>{loadMoonExample();resetMoonState();});
@@ -395,7 +438,18 @@ $('#moon-reset').addEventListener('click',()=>{try{resetMoonState();}catch(e){$(
 $('#moon-step').addEventListener('click',()=>{try{if(!moonState)resetMoonState();moonStep(moonState);renderMoon();}catch(e){$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
 $('#moon-run').addEventListener('click',()=>{try{resetMoonState();while(!moonState.done)moonStep(moonState);renderMoon();}catch(e){$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
 $('#moon-source').addEventListener('input',()=>{try{resetMoonState();}catch(e){moonState=null;renderMoon();$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
-$('#moon-input').addEventListener('input',()=>{try{resetMoonState();}catch(e){moonState=null;renderMoon();$('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;}});
+$('#moon-input').addEventListener('input',()=>{
+  try{
+    if($('#moon-example').value==='countdown'){
+      $('#moon-source').value=moonCountdownSource($('#moon-input').value);
+    }
+    resetMoonState();
+  }catch(e){
+    moonState=null;
+    renderMoon();
+    $('#moon-output').textContent='🌑 MOON ERROR\n'+e.message;
+  }
+});
 loadMoonExample(); resetMoonState();
 
 
@@ -534,8 +588,30 @@ function sourceHexagony(){
   putSource('#hexagony-source-view',`        . . .\n      . ${centered?'C':'H'} . .\n    . ${n} . . .\n  . ${core} .\n    . . . . .\n      . O @ .\n        . . .`);
 }
 function sourceArnold(){
-  const n=Math.max(1,Math.min(20,safeInt('#arnold-start',5))), line=$('#arnold-line').value;
-  putSource('#arnoldc-source-view',`IT'S SHOWTIME\nHEY CHRISTMAS TREE n\nYOU SET US UP ${n}\nHEY CHRISTMAS TREE running\nYOU SET US UP @NO PROBLEMO\nSTICK AROUND running\nTALK TO THE HAND n\nGET TO THE CHOPPER n\nHERE IS MY INVITATION n\nGET DOWN 1\nENOUGH TALK\nGET TO THE CHOPPER running\nHERE IS MY INVITATION n\nLET OFF SOME STEAM BENNET 0\nENOUGH TALK\nCHILL\nTALK TO THE HAND "${line}"\nYOU HAVE BEEN TERMINATED`);
+  const n=Math.max(1,Math.min(50,safeInt('#arnold-start',10)));
+  const step=Math.max(1,Math.min(10,safeInt('#arnold-step',1)));
+  putSource('#arnoldc-source-view',`IT'S SHOWTIME
+HEY CHRISTMAS TREE n
+YOU SET US UP ${n}
+HEY CHRISTMAS TREE running
+YOU SET US UP @NO PROBLEMO
+
+STICK AROUND running
+TALK TO THE HAND n
+
+GET TO THE CHOPPER n
+HERE IS MY INVITATION n
+GET DOWN ${step}
+ENOUGH TALK
+
+GET TO THE CHOPPER running
+HERE IS MY INVITATION n
+LET OFF SOME STEAM BENNET 0
+ENOUGH TALK
+CHILL
+
+TALK TO THE HAND "HASTA LA VISTA, BABY."
+YOU HAVE BEEN TERMINATED`);
 }
 function sourceBeatnik(){
   const text=$('#beatnik-word').value.toUpperCase(), letters=[...text].filter(c=>/[A-Z]/.test(c));
@@ -621,7 +697,7 @@ function initLiveSources(){
     [['#ws-date','#ws-mode'],sourceWhitespace],
     [['#piet-a','#piet-b'],sourcePiet],
     [['#hex-n','#hex-mode'],sourceHexagony],
-    [['#arnold-start','#arnold-line'],sourceArnold],
+    [['#arnold-start','#arnold-step'],sourceArnold],
     [['#beatnik-word'],sourceBeatnik],
     [['#chef-batches','#chef-per','#chef-eaten'],sourceChef],
     [['#spl-a','#spl-op','#spl-b'],sourceShakespeare],
