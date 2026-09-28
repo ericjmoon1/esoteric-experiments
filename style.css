@@ -705,3 +705,55 @@ pre.code, pre.revealed-code {
     grid-template-columns: repeat(2, minmax(0,1fr)) !important;
   }
 }
+
+/* Whitespace: real invisible source, selectable in-place */
+#whitespace .whitespace-source-frame {
+  height: 160px !important;
+  min-height: 160px !important;
+  max-height: 160px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+}
+#whitespace .whitespace-raw {
+  display: block;
+  width: 100%;
+  height: 160px;
+  min-height: 160px !important;
+  max-height: 160px !important;
+  margin: 0;
+  padding: 12px 14px;
+  resize: none;
+  overflow: hidden;
+  border: 0;
+  outline: 0;
+  background: #ffffff !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  caret-color: #777;
+  font: 12px/1.35 Consolas, "Liberation Mono", monospace;
+  white-space: pre-wrap;
+  user-select: text;
+  cursor: text;
+}
+#whitespace .whitespace-raw::selection {
+  background: rgba(40, 80, 160, .22);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+#whitespace #ws-visible {
+  box-sizing: border-box;
+  width: 100%;
+  height: 160px;
+  min-height: 160px !important;
+  max-height: 160px !important;
+  margin: 0;
+  padding: 12px 14px;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  color: #262626 !important;
+  font: 11px/1.35 Consolas, "Liberation Mono", monospace;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
