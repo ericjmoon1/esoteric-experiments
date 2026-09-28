@@ -417,7 +417,9 @@ function cowPrintProgram(text){
     code.push('Moo');
     current=target;
   }
-  return code.join(' ');
+  const lines=[];
+  for(let i=0;i<code.length;i+=12) lines.push(code.slice(i,i+12).join(' '));
+  return lines.join('\n');
 }
 function sourceCow() {
   const a=safeNumber('#cow-a'), b=safeNumber('#cow-b'), op=$('#cow-op').value;
@@ -589,7 +591,10 @@ function bfToOok(code){
     '>':'Ook. Ook?','<':'Ook? Ook.','+':'Ook. Ook.','-':'Ook! Ook!',
     '.':'Ook! Ook.',',':'Ook. Ook!','[':'Ook! Ook?',']':'Ook? Ook!'
   };
-  return [...code].map(ch=>map[ch]||'').filter(Boolean).join(' ');
+  const pairs=[...code].map(ch=>map[ch]||'').filter(Boolean);
+  const lines=[];
+  for(let i=0;i<pairs.length;i+=8) lines.push(pairs.slice(i,i+8).join(' '));
+  return lines.join('\n');
 }
 function sourceOok(){
   const apes=Math.max(0,safeInt('#ook-apes'));
@@ -637,7 +642,9 @@ function bfPrintProgram(text){
 function sourceBrainfuck(){
   const msg=$('#bf-message').value,raw=Math.max(0,Math.min(25,safeInt('#bf-shift',3))),mode=$('#bf-mode').value;
   const result=shiftText(msg,mode==='encode'?raw:-raw);
-  putSource('#brainfuck-source-view',bfPrintProgram(result));
+  const rawCode=bfPrintProgram(result);
+  const lines=rawCode.match(/.{1,72}/g)||[''];
+  putSource('#brainfuck-source-view',lines.join('\n'));
 }
 function ahhhSetAndPrint(n){
   n=Math.trunc(n);
