@@ -1,21 +1,46 @@
-# Esoteric Programming Languages — interactive site
+# Esoteric Programming Languages
 
-This folder is ready to use as the complete contents of the GitHub repository `esoteric-experiments`.
+An interactive collection of small projects written in esoteric programming languages.
 
-## Replace the current repo
+The site explores languages built around unusual syntax, visual systems, jokes, and deliberate constraints. Each section includes a source-code example and an interactive browser companion designed around something distinctive about that language.
 
-1. Delete the current files in the repository.
-2. Upload **the contents of this folder** to the repository root.
-3. `index.html`, `style.css`, and `app.js` must be directly at the root, not inside another folder.
-4. Keep GitHub Pages set to `main` / `/(root)`.
-5. The published URL is `https://ericjmoon1.github.io/esoteric-experiments/`.
+## Included languages
 
-## Structure
+- COW
+- Whitespace
+- Piet
+- Hexagony
+- ArnoldC
+- Beatnik
+- Chef
+- Shakespeare Programming Language
+- LOLCODE
+- Rockstar
+- INTERCAL
+- Ook!
+- Chicken
+- Malbolge
+- JSFuck
+- Befunge-93
+- Brainfuck
+- AHHH
+- HQ9+
+- MOON
 
-- `index.html` — complete page markup
-- `style.css` — editorial layout, sticky jump sidebar, responsive styling
-- `app.js` — all browser interactions and the MOON interpreter
-- `programs/` — esolang source experiments from the original collection
-- `moon/` — MOON 1.0 specification and example programs
+## MOON
 
-The browser controls are interactive companions to the source experiments. MOON is interpreted directly in the browser.
+MOON is a small esoteric programming language I designed using celestial emoji as instructions. It is a tape-based language inspired by Brainfuck, with its own instruction set, terminology, numeric output, direct zeroing, and browser interpreter.
+
+The site includes an editable MOON playground with example programs, step-by-step execution, and a memory display.
+
+## Live Site
+
+https://ericjmoon1.github.io/esoteric-experiments/
+
+## Project Structure
+
+- `index.html` — main interactive page
+- `style.css` — site styling
+- `app.js` — browser interactions and MOON interpreter
+- `programs/` — source files for the esolang experiments
+- `moon/` — MOON specification and example programs
