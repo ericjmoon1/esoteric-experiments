@@ -465,7 +465,7 @@ input:hover, select:hover, textarea:hover { border-color: #7f7f78; }
   border: 1px solid #b6b6ae;
   border-left: 3px solid var(--local-accent);
 }
-#piet-canvas {
+#piet-image {
   display: block;
   width: 100%;
   height: auto;
